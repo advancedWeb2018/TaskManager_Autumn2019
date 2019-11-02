@@ -1,19 +1,17 @@
-﻿using AutoMapper;
-using MakeIt.WebUI.App_Start;
+﻿using MakeIt.WebUI.App_Start;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 
 namespace MakeIt.WebUI
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
-        internal static MapperConfiguration MapperConfiguration { get; private set; }
-
         protected void Application_Start()
         {
-            // Automapper
-            MapperConfiguration = MapperConfig.GetConfiguration();
+            // Autofac and Automapper configurations
+            AutofacConfig.RegisterComponents();
 
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

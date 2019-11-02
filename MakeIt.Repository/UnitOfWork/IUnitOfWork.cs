@@ -1,18 +1,13 @@
-﻿using MakeIt.Repository.Repository.Interface;
+﻿using System;
 
 namespace MakeIt.Repository.UnitOfWork
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
-        IColorRepository Colors { get; }
-        ICommentRepository Comments { get; }
-        ILabelRepository Labels { get; }
-        IMilestoneRepository Milestones { get; }
-        IPriorityRepository Priorities { get; }
-        IStatusRepository Statuses { get; }
-        ITaskRepository Tasks { get; }
-        IUserRepository Users { get; }
-
-        void Save();
+        /// <summary>
+        /// Saves all pending changes
+        /// </summary>
+        /// <returns>The number of objects in an Added, Modified, or Deleted state</returns>
+        int Commit();
     }
 }

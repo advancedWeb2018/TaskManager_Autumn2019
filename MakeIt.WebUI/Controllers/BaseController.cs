@@ -5,14 +5,11 @@ namespace MakeIt.WebUI.Controllers
 {
     public class BaseController : Controller
     {
-        private IMapper _mapper = null;
-        protected IMapper Mapper
+        protected IMapper _mapper;
+
+        public BaseController(IMapper mapper)
         {
-            get
-            {
-                if (_mapper == null) _mapper = MvcApplication.MapperConfiguration.CreateMapper();
-                return _mapper;
-            }
+            _mapper = mapper;
         }
     }
 }

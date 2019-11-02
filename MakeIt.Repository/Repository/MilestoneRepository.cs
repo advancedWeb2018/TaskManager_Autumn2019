@@ -1,11 +1,13 @@
 ﻿using MakeIt.DAL.EF;
 using MakeIt.Repository.BaseRepository;
-using MakeIt.Repository.Repository.Interface;
 using System.Data.Entity;
 
 namespace MakeIt.Repository.Repository
 {
-    public class MilestoneRepository : BaseRepository<Milestone>, IMilestoneRepository
+    public interface IMilestoneRepository : IGenericRepository<Milestone>
+    {
+    }
+    public class MilestoneRepository : GenericRepository<Milestone>, IMilestoneRepository
     {
         public MilestoneRepository(DbContext context)
             : base(context)

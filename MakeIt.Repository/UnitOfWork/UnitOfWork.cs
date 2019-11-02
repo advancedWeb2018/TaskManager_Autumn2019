@@ -1,58 +1,60 @@
 ﻿using System;
-using MakeIt.DAL.EF;
-using MakeIt.Repository.Repository;
-using MakeIt.Repository.Repository.Interface;
+using System.Data.Entity;
 
 namespace MakeIt.Repository.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork, IDisposable
+    /// <summary>
+    /// The Entity Framework implementation of IUnitOfWork
+    /// </summary>
+    public sealed class UnitOfWork : IUnitOfWork
     {
-        public readonly MakeItContext _context = new MakeItContext();
+        /// <summary>
+        /// The DbContext
+        /// </summary>
+        private DbContext _dbContext;
 
-        public IColorRepository Colors { get; private set; }
-        public ICommentRepository Comments { get; private set; }
-        public ILabelRepository Labels { get; private set; }
-        public IMilestoneRepository Milestones { get; private set; }
-        public IPriorityRepository Priorities { get; private set; }
-        public IStatusRepository Statuses { get; private set; }
-        public ITaskRepository Tasks { get; private set; }
-        public IUserRepository Users { get; private set; }
-
-        public UnitOfWork()
+        /// <summary>
+        /// Initializes a new instance of the UnitOfWork class.
+        /// </summary>
+        /// <param name="context">The object context</param>
+        public UnitOfWork(DbContext context)
         {
-            Colors = new ColorRepository(_context);
-            Comments = new CommentRepository(_context);
-            Labels = new LabelRepository(_context);
-            Milestones = new MilestoneRepository(_context);
-            Priorities = new PriorityRepository(_context);
-            Statuses = new StatusRepository(_context);
-            Tasks = new TaskRepository(_context);
-            Users = new UserRepository(_context);
+            _dbContext = context;
         }
 
-        public void Save()
+        /// <summary>
+        /// Saves all pending changes
+        /// </summary>
+        /// <returns>The number of objects in an Added, Modified, or Deleted state</returns>
+        public int Commit()
         {
-            _context.SaveChanges();
+            // Save changes with the default options
+            return _dbContext.SaveChanges();
         }
 
-        private bool disposed = false;
-
-        public virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-                this.disposed = true;
-            }
-        }
-
+        /// <summary>
+        /// Disposes the current object
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes all external resources.
+        /// </summary>
+        /// <param name="disposing">The dispose indicator.</param>
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_dbContext != null)
+                {
+                    _dbContext.Dispose();
+                    _dbContext = null;
+                }
+            }
         }
     }
 }
