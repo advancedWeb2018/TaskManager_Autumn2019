@@ -140,6 +140,7 @@
     <Compile Include="AutoMapper\DTOToViewModelMappingProfile.cs" />
     <Compile Include="AutoMapper\MapperAutofacModule.cs" />
     <Compile Include="AutoMapper\ViewModelToDTOMappingProfile.cs" />
+    <Compile Include="Controllers\CabinetController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Global.asax.cs">
@@ -237,6 +238,9 @@
     <Content Include="less\variables.less" />
     <None Include="packages.config" />
     <Content Include="Views\Account\_ViewStart.cshtml" />
+    <Content Include="Views\Cabinet\_ViewStart.cshtml" />
+    <Content Include="Views\Cabinet\_Layout.cshtml" />
+    <Content Include="Views\Cabinet\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MakeIt.BLL\MakeIt.BLL.csproj">
