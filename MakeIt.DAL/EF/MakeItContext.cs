@@ -18,7 +18,7 @@ namespace MakeIt.DAL.EF
         }
 
         public MakeItContext()
-            : base("DbConnection")
+            : base("MakeItContext")
         {
             // Lazy loading
             Configuration.LazyLoadingEnabled = true;
