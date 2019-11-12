@@ -1,11 +1,9 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
-using MakeIt.DAL.EF;
 using MakeIt.Repository.UnitOfWork;
 using MakeIt.WebUI.AutoMapper;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -47,7 +45,7 @@ namespace MakeIt.WebUI.App_Start
                     .AsImplementedInterfaces().InstancePerLifetimeScope();
             }
 
-            builder.RegisterType(typeof(MakeItContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
+            //builder.RegisterType(typeof(MakeItContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
             builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
 
             // Create a new container with the dependencies defined above

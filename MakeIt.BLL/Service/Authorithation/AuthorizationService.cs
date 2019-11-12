@@ -15,17 +15,19 @@ namespace MakeIt.BLL.Service.Authorithation
     public class AuthorizationService : EntityService<User>, IAuthorizationService
     {
         IUnitOfWork _unitOfWork;
-        IUserRepository _userRepository;
 
-        public AuthorizationService(IMapper mapper, IUnitOfWork uow, IUserRepository userRepository) 
-            : base(mapper, uow, userRepository)
+        public AuthorizationService(IMapper mapper, IUnitOfWork uow) 
+            : base(mapper, uow)
         {
             _unitOfWork = uow;
-            _userRepository = userRepository;
         }
 
         public UserAuthDTO MappingTest(UserAuthDTO userDto)
         {
+            using (_unitOfWork)
+            {
+                var foo = _unitOfWork.Users.Add(new User { Email = "dfsfsf", UserName = "dsfsffs"});
+            }
             var testEntityObject = _mapper.Map<User>(userDto);
 
             var testDtoObject = _mapper.Map<UserAuthDTO>(testEntityObject);

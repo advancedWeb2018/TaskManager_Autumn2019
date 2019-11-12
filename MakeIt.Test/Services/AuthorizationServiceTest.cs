@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MakeIt.BLL.Service.Authorithation;
 using MakeIt.DAL.EF;
-using MakeIt.Repository.Repository;
 using MakeIt.Repository.UnitOfWork;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,7 +12,6 @@ namespace MakeIt.Test.Services
     public class AuthorizationServiceTest
     {
         IAuthorizationService _service;
-        Mock<IUserRepository> _mockRepository;
         Mock<IUnitOfWork> _mockUnitWork;
         Mock<IMapper> _mockMapper;
         List<User> listUser;
@@ -21,10 +19,9 @@ namespace MakeIt.Test.Services
         [TestInitialize]
         public void Initialize()
         {
-            _mockRepository = new Mock<IUserRepository>();
             _mockUnitWork = new Mock<IUnitOfWork>();
             _mockMapper = new Mock<IMapper>();
-            _service = new AuthorizationService(_mockMapper.Object, _mockUnitWork.Object, _mockRepository.Object);
+            _service = new AuthorizationService(_mockMapper.Object, _mockUnitWork.Object);
             listUser = new List<User>() {
                 new User {UserName = "User1", PasswordHash="123456", Email="User1@gmail.com"},
                 new User {UserName = "User2", PasswordHash="234567", Email="User2@gmail.com"},
@@ -36,7 +33,7 @@ namespace MakeIt.Test.Services
         public void User_Get_All()
         {
             //Arrange
-            _mockRepository.Setup(x => x.GetAll()).Returns(listUser);
+            _mockUnitWork.Setup(x => x.GetRepository<User>().GetAll()).Returns(listUser);
 
             //Act
             List<User> results = _service.GetAll() as List<User>;
@@ -52,7 +49,7 @@ namespace MakeIt.Test.Services
             //Arrange
             int Id = 1;
             User user = new User() { UserName = "User4", PasswordHash = "654321", Email = "User4@gmail.com" };
-            _mockRepository.Setup(m => m.Add(user)).Returns((User e) =>
+            _mockUnitWork.Setup(m => m.GetRepository<User>().Add(user)).Returns((User e) =>
             {
                 e.Id = Id;
                 return e;
@@ -64,7 +61,7 @@ namespace MakeIt.Test.Services
 
             //Assert
             Assert.AreEqual(Id, user.Id);
-            _mockUnitWork.Verify(m => m.Commit(), Times.Once);
+            _mockUnitWork.Verify(m => m.SaveChanges(), Times.Once);
         }
     }
 }
