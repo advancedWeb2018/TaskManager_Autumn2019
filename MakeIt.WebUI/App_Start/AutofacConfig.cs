@@ -1,13 +1,18 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using MakeIt.BLL.Identity;
+using MakeIt.DAL.EF;
 using MakeIt.Repository.UnitOfWork;
 using MakeIt.WebUI.AutoMapper;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 
 namespace MakeIt.WebUI.App_Start
@@ -45,9 +50,18 @@ namespace MakeIt.WebUI.App_Start
                     .AsImplementedInterfaces().InstancePerLifetimeScope();
             }
 
-            //builder.RegisterType(typeof(MakeItContext)).As(typeof(DbContext)).InstancePerLifetimeScope();
-            builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
+            builder.RegisterType<MakeItContext>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
+            builder.Register(c => new UserStore(c.Resolve<MakeItContext>())).AsImplementedInterfaces().InstancePerRequest();
+            builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
+            builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
+            {
+                DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("Application​")
+            });
 
+            builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
+       
             // Create a new container with the dependencies defined above
             var container = builder.Build();
 

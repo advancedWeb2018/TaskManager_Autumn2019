@@ -15,6 +15,6 @@ namespace MakeIt.WebUI.ViewModel.Account
         public string Password { get; set; }
 
         [Display(Name = "Remember Me")]
-        public bool Remember { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

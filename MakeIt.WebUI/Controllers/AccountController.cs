@@ -2,6 +2,8 @@
 using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.Authorithation;
 using MakeIt.WebUI.ViewModel.Account;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace MakeIt.WebUI.Controllers
@@ -21,15 +23,50 @@ namespace MakeIt.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Login(LoginViewModel model)
         {
-            var modelDTO = _mapper.Map<UserAuthDTO>(model);
+            if (ModelState.IsValid)
+            {
+                var userDTO = _mapper.Map<UserAuthDTO>(model);
+                var result = (await _authorizationService.GetSignInStatus(userDTO)).Result(out bool isEmailConfirmed);
 
-            var test = _authorizationService.MappingTest(modelDTO);
+                if (!isEmailConfirmed)
+                {
+                    ModelState.AddModelError("Email", "Email isn`t confirmed");
+                    return View(model);
+                }
 
-            var reverse = _mapper.Map<LoginViewModel>(test);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        _authorizationService.ResetAccessFailedCount(userDTO);
 
-            return View();
+                        if (true) // TODO check role
+                            return Redirect("/Cabinet/Index");
+
+                        //ModelState.AddModelError("Password", "Not enough access rights!");
+                        //return View(model);
+
+                    case SignInStatus.LockedOut:
+                        return View(model); //TODO BlockedAccount page
+
+                    case SignInStatus.Failure:
+                        ModelState.AddModelError("Password", "Wrong password");
+                        return View(model);
+
+                    default:
+                        ModelState.AddModelError("Password", "Login Failed");
+                        return View(model);
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("Email", "Wrong LogIn");
+            }
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace MakeIt.DAL.EF
 {
     public class MakeItContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
     {
+        private static MakeItContext _instance;
         static MakeItContext()
         {
             Database.SetInitializer(new ContextInitializer());
@@ -23,6 +24,14 @@ namespace MakeIt.DAL.EF
             // Lazy loading
             Configuration.LazyLoadingEnabled = true;
             Configuration.ProxyCreationEnabled = true;
+        }
+
+        public static MakeItContext Create()
+        {
+            if (_instance == null)
+                _instance = new MakeItContext();
+
+            return _instance;
         }
 
         // Identity entities

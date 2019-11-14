@@ -59,9 +59,9 @@ namespace MakeIt.Test
         {
             var listUsers = new List<User>
             {
-                new User {UserName = "User1", PasswordHash="123456", Email="User1@gmail.com"},
-                new User {UserName = "User2", PasswordHash="234567", Email="User2@gmail.com"},
-                new User {UserName = "User3", PasswordHash="345678", Email="User3@gmail.com"}
+                new User {UserName = "User1", PasswordHash="12345678-", Email="User1@gmail.com"},
+                new User {UserName = "User2", PasswordHash="23456778-", Email="User2@gmail.com"},
+                new User {UserName = "User3", PasswordHash="34567812-", Email="User3@gmail.com"}
             };
             foreach (var user in listUsers)
             {

@@ -1,38 +1,56 @@
 ﻿using AutoMapper;
 using MakeIt.BLL.Common;
 using MakeIt.BLL.DTO;
+using MakeIt.BLL.Helper;
+using MakeIt.BLL.Identity;
 using MakeIt.DAL.EF;
-using MakeIt.Repository.Repository;
 using MakeIt.Repository.UnitOfWork;
+using Microsoft.AspNet.Identity.Owin;
+using System.Threading.Tasks;
 
 namespace MakeIt.BLL.Service.Authorithation
 {
     public interface IAuthorizationService : IEntityService<User>
     {
-        UserAuthDTO MappingTest(UserAuthDTO userDto);
+        Task<AsyncOutResult<SignInStatus, bool>> GetSignInStatus(UserAuthDTO userDto);
+        void ResetAccessFailedCount(UserAuthDTO userDto);
     }
 
     public class AuthorizationService : EntityService<User>, IAuthorizationService
     {
-        IUnitOfWork _unitOfWork;
+        private ApplicationSignInManager _signInManager; 
+        private ApplicationUserManager _userManager;
+        private IUnitOfWork _unitOfWork;
 
-        public AuthorizationService(IMapper mapper, IUnitOfWork uow) 
+        public AuthorizationService(IMapper mapper, IUnitOfWork uow, ApplicationUserManager userManager, ApplicationSignInManager signInManager)
             : base(mapper, uow)
         {
             _unitOfWork = uow;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public UserAuthDTO MappingTest(UserAuthDTO userDto)
+        public async Task<AsyncOutResult<SignInStatus, bool>> GetSignInStatus(UserAuthDTO userDto)
         {
-            using (_unitOfWork)
+            var result = SignInStatus.Failure; // start authorization result
+
+            var user = await _userManager.FindByEmailAsync(userDto.Email);
+            bool isEmailConfirmed = false;
+            if (user != null)
             {
-                var foo = _unitOfWork.Users.Add(new User { Email = "dfsfsf", UserName = "dsfsffs"});
+                isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user.Id);
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                result = await _signInManager.PasswordSignInAsync(user.UserName, userDto.Password, userDto.RememberMe, shouldLockout: true);
             }
-            var testEntityObject = _mapper.Map<User>(userDto);
+            return new AsyncOutResult<SignInStatus, bool>(result, isEmailConfirmed);
+        }
 
-            var testDtoObject = _mapper.Map<UserAuthDTO>(testEntityObject);
-
-            return testDtoObject;
+        public async void ResetAccessFailedCount(UserAuthDTO userDto)
+        {
+            var user = await _userManager.FindByEmailAsync(userDto.Email);
+            if (user != null)
+                await _userManager.ResetAccessFailedCountAsync(user.Id);
         }
     }
 }

@@ -25,7 +25,9 @@ namespace MakeIt.BLL.AutoMapper
                 .ForMember(x => x.Roles, opt => opt.Ignore())
                 .ForMember(x => x.SecurityStamp, opt => opt.Ignore())
                 .ForMember(x => x.TwoFactorEnabled, opt => opt.Ignore())
-                .ForMember(x => x.UserName, opt => opt.Ignore());
+                .ForMember(x => x.UserName, opt => opt.Ignore())
+                .ForMember(x => x.CreateDateTime, opt => opt.Ignore())
+                .ForMember(x => x.EditDateTime, opt => opt.Ignore());
 
             // TODO another maps for another issues
             // depending on the task

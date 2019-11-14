@@ -18,14 +18,16 @@
                         <form role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="E-mail" name="email" type="email" autofocus>
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder="E-mail", @name="email", @type="email", @autofocus = "autofocus"  })
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @name = "password", @type = "password"})
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })   
                                 </div>
                                 <div class="checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        <input name="rememberme" type="checkbox" value="Remember Me">Remember Me
                                     </label>
                                 </div>
                                 <button type="submit" value="enter" class="btn btn-lg btn-success btn-block">Login</button>
