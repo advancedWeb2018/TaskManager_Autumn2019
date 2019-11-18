@@ -1,13 +1,16 @@
 ﻿using Microsoft.Owin;
+using Microsoft.Owin.Security.DataProtection;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(MakeIt.WebUI.Startup))]
+[assembly: OwinStartup(typeof(MakeIt.WebUI.Startup))]
 namespace MakeIt.WebUI
 {
     public partial class Startup
     {
+        internal static IDataProtectionProvider DataProtectionProvider { get; private set; }
         public void Configuration(IAppBuilder app)
         {
+            DataProtectionProvider = app.GetDataProtectionProvider();
             ConfigureApp(app);
         }
     }

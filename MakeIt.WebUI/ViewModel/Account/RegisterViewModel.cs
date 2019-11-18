@@ -4,8 +4,15 @@ namespace MakeIt.WebUI.ViewModel.Account
 {
     public class RegisterViewModel
     {
+        public RegisterViewModel() { }
+
+        public RegisterViewModel(string recaptchaPublicKey)
+        {
+            RecaptchaPublicKey = recaptchaPublicKey;
+        }
+
         [Required]
-        [Display(Name = "Login")]
+        [Display(Name = "UserName")]
         public string UserName { get; set; }
 
         [EmailAddress]
@@ -13,7 +20,7 @@ namespace MakeIt.WebUI.ViewModel.Account
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Minimum Length = 6", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Minimum Length = 8", MinimumLength = 8)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
@@ -22,7 +29,8 @@ namespace MakeIt.WebUI.ViewModel.Account
         [Display(Name = "Password confirmation")]
         [Compare("Password", ErrorMessage = "Password and confirmation do not match")]
         public string ConfirmPassword { get; set; }
+
+        public string RecaptchaPublicKey { get; }
+
     }
-
-
 }

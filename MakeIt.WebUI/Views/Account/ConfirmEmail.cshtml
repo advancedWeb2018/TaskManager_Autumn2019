@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+
+<form>
+    <fieldset>
+        <legend>
+            Confirm Email<span>
+            An e-mail with a confirmation code has been sent to you. Follow the link and log in to your account
+</span>
+        </legend>
+        <span>Message sent to mail:</span>
+        <span class="checkingEmail"><a href="mailto:@ViewBag.Email">@ViewBag.Email</a></span>
+    </fieldset>
+</form>
+

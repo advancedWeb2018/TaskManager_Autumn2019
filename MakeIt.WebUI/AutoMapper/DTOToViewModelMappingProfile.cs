@@ -9,7 +9,8 @@ namespace MakeIt.WebUI.AutoMapper
         public DTOToViewModelMappingProfile()
         {
             // create mapping           
-            CreateMap<UserAuthDTO, LoginViewModel>(); //.ForMember(x => x.Remember, opt => opt.Ignore());
+            CreateMap<UserAuthDTO, LoginViewModel>();
+            CreateMap<UserAuthDTO, RegisterViewModel>();
 
             // TODO another maps for another issues
             // depending on the task

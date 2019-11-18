@@ -1,11 +1,12 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using MakeIt.BLL.Identity;
+using MakeIt.BLL.IdentityConfig;
 using MakeIt.DAL.EF;
 using MakeIt.Repository.UnitOfWork;
 using MakeIt.WebUI.AutoMapper;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataProtection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -50,18 +51,14 @@ namespace MakeIt.WebUI.App_Start
                     .AsImplementedInterfaces().InstancePerLifetimeScope();
             }
 
-            builder.RegisterType<MakeItContext>().AsSelf().InstancePerRequest();
-            builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
-            builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
-            builder.Register(c => new UserStore(c.Resolve<MakeItContext>())).AsImplementedInterfaces().InstancePerRequest();
-            builder.Register(c => HttpContext.Current.GetOwinContext().Authentication).As<IAuthenticationManager>();
-            builder.Register(c => new IdentityFactoryOptions<ApplicationUserManager>
-            {
-                DataProtectionProvider = new Microsoft.Owin.Security.DataProtection.DpapiDataProtectionProvider("Application​")
-            });
-
             builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
-       
+            builder.RegisterType<MakeItContext>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationSignInManager>().AsSelf().InstancePerRequest();
+            builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerRequest();
+            builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
+            builder.Register(c => new UserStore(c.Resolve<MakeItContext>())).AsImplementedInterfaces().InstancePerRequest();
+            builder.Register<IDataProtectionProvider>(c => Startup.DataProtectionProvider).InstancePerRequest();
+    
             // Create a new container with the dependencies defined above
             var container = builder.Build();
 

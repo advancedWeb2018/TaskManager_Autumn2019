@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.Authorithation;
+using MakeIt.WebUI.ReCaptchaV3;
 using MakeIt.WebUI.ViewModel.Account;
 using Microsoft.AspNet.Identity.Owin;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -67,6 +69,66 @@ namespace MakeIt.WebUI.Controllers
             }
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        // GET: /Account/Register
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Register(string returnUrl)
+        {
+            return View(new RegisterViewModel(ConfigurationManager.AppSettings["RecaptchaPublicKey"]));
+        }
+
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateRecaptcha]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var userDTO = _mapper.Map<UserAuthDTO>(model);
+                var result = (await _authorizationService.GetIdentityResult(userDTO)).Result(out int userId);
+
+                if (result.Succeeded)
+                {
+                    // TODO add to role
+
+                    var code = await _authorizationService.GenerateEmailConfirmationToken(userId);
+
+                    var callbackUrl = Url.Action("ConfirmUserEmail", "Account",
+                                      new { userId = userId, code = code }, protocol: Request.Url.Scheme);
+
+
+                    await _authorizationService.SendEmailConfirmationToken(userId, callbackUrl);
+
+                    return RedirectToAction("ConfirmEmail", "Account", new { email = model.Email });
+                }
+            }
+            return View("Register");
+        }
+
+        // GET: /Account/ConfirmEmail
+        [AllowAnonymous]
+        public ActionResult ConfirmEmail(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ConfirmUserEmail(string userId, string code)
+        {
+           // TODO
+            return View();
+        }
+
+        // GET: /Account/ForgotPassword
+        [AllowAnonymous]
+        public ActionResult ForgotPassword()
+        {
+            return View();
         }
     }
 }

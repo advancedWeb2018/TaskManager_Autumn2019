@@ -1,12 +1,15 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Invisible Captcha -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    <link href="~/Oxygen-Icons.org-Oxygen-Actions-view-pim-tasks.ico" rel="shortcut icon" type="image/x-icon" />
     <title>MakeIt</title>
 
     <!-- Bootstrap Core CSS -->
@@ -25,7 +28,13 @@
 </head>
 
 <body>
-    @RenderBody()
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
 
     <!-- jQuery -->
     @Scripts.Render("~/bundles/jquery")
