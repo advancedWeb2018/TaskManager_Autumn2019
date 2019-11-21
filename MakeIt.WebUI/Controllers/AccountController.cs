@@ -5,6 +5,7 @@ using MakeIt.WebUI.ReCaptchaV3;
 using MakeIt.WebUI.ViewModel.Account;
 using Microsoft.AspNet.Identity.Owin;
 using System.Configuration;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
@@ -19,7 +20,7 @@ namespace MakeIt.WebUI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login()
+        public async Task<ActionResult> Login()
         {
             return View();
         }
@@ -74,8 +75,12 @@ namespace MakeIt.WebUI.Controllers
         // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult Register(string returnUrl)
+        public async Task<ActionResult> Register(string returnUrl)
         {
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Cabinet");
+            }
             return View(new RegisterViewModel(ConfigurationManager.AppSettings["RecaptchaPublicKey"]));
         }
 
@@ -105,8 +110,9 @@ namespace MakeIt.WebUI.Controllers
 
                     return RedirectToAction("ConfirmEmail", "Account", new { email = model.Email });
                 }
+                ModelState.AddModelError("Email", result.Errors.ElementAt(0));
             }
-            return View("Register");
+            return View(new RegisterViewModel(ConfigurationManager.AppSettings["RecaptchaPublicKey"])); ;
         }
 
         // GET: /Account/ConfirmEmail

@@ -66,7 +66,12 @@ namespace MakeIt.BLL.Service.Authorithation
         #region Register methods
         public async Task<AsyncOutResult<IdentityResult, int>> GetIdentityResult(UserAuthDTO userDto)
         {
-            var user = _mapper.Map<User>(userDto);
+            var user = new User
+            {
+                UserName = userDto.UserName,
+                Email = userDto.Email
+            };
+
             var result = await _userManager.CreateAsync(user, userDto.Password);
             int userId = user.Id;
             return new AsyncOutResult<IdentityResult, int>(result, userId);

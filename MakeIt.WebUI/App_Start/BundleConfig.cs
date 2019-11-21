@@ -27,7 +27,7 @@ namespace MakeIt.WebUI
             bundles.Add(new ScriptBundle("~/bundles/sb-admin-2").Include(
                      "~/Scripts/sb-admin-2.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
+            bundles.Add(new StyleBundle("~/Content/commonStyles").Include(
                       "~/Content/css/bootstrap.min.css",
                       "~/Content/css/sb-admin-2.css",
                       "~/Content/css/plugins/metisMenu/metisMenu.min.css",
