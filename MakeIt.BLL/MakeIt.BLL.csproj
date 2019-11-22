@@ -98,6 +98,7 @@
     <Compile Include="IdentityConfig\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\Authorithation\AuthorizationService.cs" />
+    <Compile Include="Service\Authorithation\UserManagerExtension.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -8,18 +8,26 @@ using MakeIt.Repository.UnitOfWork;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using System;
 using System.Threading.Tasks;
 
 namespace MakeIt.BLL.Service.Authorithation
 {
     public interface IAuthorizationService : IEntityService<User>
     {
+        Task<UserAuthDTO> FindByIdAsync(string userId);
+        Task<UserAuthDTO> FindByEmailAsync(string email);
         Task<AsyncOutResult<SignInStatus, bool>> GetSignInStatus(UserAuthDTO userDto);
-        void ResetAccessFailedCount(UserAuthDTO userDto);
+        System.Threading.Tasks.Task ResetAccessFailedCount(UserAuthDTO userDto);
         Task<AsyncOutResult<IdentityResult, int>> GetIdentityResult(UserAuthDTO userDto);
         Task<string> GenerateEmailConfirmationToken(int userId);
+        Task<string> GeneratePasswordResetToken(int userId);
         System.Threading.Tasks.Task SendEmailConfirmationToken(int userId, string callbackUrl);
+        System.Threading.Tasks.Task SendEmailAsync(int userId, string subject, string body);
+        bool IsTokenExpired(UserAuthDTO userDto, string code);
+        Task<IdentityResult> ConfirmEmailAsync(UserAuthDTO userDto, string code);
+        Task<bool> IsEmailConfirmedAsync(int userId);
+        Task<IdentityResult> ResetPasswordAsync(int userId, string token, string newPassword);
+        void SignOut();
     }
 
     public class AuthorizationService : EntityService<User>, IAuthorizationService
@@ -38,7 +46,13 @@ namespace MakeIt.BLL.Service.Authorithation
             _authenticationManager = authenticationManager;
         }
 
-        #region Login methods
+        public async Task<UserAuthDTO> FindByIdAsync(string userId)
+        {
+
+            var user = await _userManager.FindByIdAsync(int.Parse(userId));
+            return _mapper.Map<UserAuthDTO>(user);
+        }
+
         public async Task<AsyncOutResult<SignInStatus, bool>> GetSignInStatus(UserAuthDTO userDto)
         {
             var result = SignInStatus.Failure; // start authorization result
@@ -55,15 +69,13 @@ namespace MakeIt.BLL.Service.Authorithation
             return new AsyncOutResult<SignInStatus, bool>(result, isEmailConfirmed);
         }
 
-        public async void ResetAccessFailedCount(UserAuthDTO userDto)
+        public async System.Threading.Tasks.Task ResetAccessFailedCount(UserAuthDTO userDto)
         {
             var user = await _userManager.FindByEmailAsync(userDto.Email);
             if (user != null)
                 await _userManager.ResetAccessFailedCountAsync(user.Id);
         }
-        #endregion
 
-        #region Register methods
         public async Task<AsyncOutResult<IdentityResult, int>> GetIdentityResult(UserAuthDTO userDto)
         {
             var user = new User
@@ -84,12 +96,54 @@ namespace MakeIt.BLL.Service.Authorithation
             return code;
         }
 
+        public async Task<string> GeneratePasswordResetToken(int userId)
+        {
+            string code = string.Empty;
+            code = await _userManager.GeneratePasswordResetTokenAsync(userId);
+            return code;
+        }
+
         public async System.Threading.Tasks.Task SendEmailConfirmationToken(int userId, string callbackUrl)
         {
             await _userManager.SendEmailAsync(userId,
                    "Email Verification",
                    "To confirm your email address, please click on the link:\n" + callbackUrl);
         }
-        #endregion
+
+        public bool IsTokenExpired(UserAuthDTO userDto, string code)
+        {
+            //var user = await _userManager.FindByEmailAsync(userDto.Email);
+            return _userManager.IsTokenExpired(_mapper.Map<User>(userDto), code);
+        }
+
+        public async Task<IdentityResult> ConfirmEmailAsync(UserAuthDTO userDto, string code)
+        {
+            return await _userManager.ConfirmEmailAsync(userDto.Id, code);
+        }
+
+        public async System.Threading.Tasks.Task<UserAuthDTO> FindByEmailAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return _mapper.Map<UserAuthDTO>(user);
+        }
+
+        public async Task<bool> IsEmailConfirmedAsync(int userId)
+        {
+            return await _userManager.IsEmailConfirmedAsync(userId);
+        }
+
+        public async System.Threading.Tasks.Task SendEmailAsync(int userId, string subject, string body)
+        {
+            await _userManager.SendEmailAsync(userId, subject, body);
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(int userId, string token, string newPassword)
+        {
+            return await _userManager.ResetPasswordAsync(userId, token, newPassword);
+        }
+        public void SignOut()
+        {
+            _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        }
     }
 }

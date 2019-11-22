@@ -3,6 +3,7 @@ using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.Authorithation;
 using MakeIt.WebUI.ReCaptchaV3;
 using MakeIt.WebUI.ViewModel.Account;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Configuration;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Web.Mvc;
 
 namespace MakeIt.WebUI.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : BaseController
     {
         private readonly IAuthorizationService _authorizationService;
@@ -19,14 +21,13 @@ namespace MakeIt.WebUI.Controllers
             _authorizationService = authorizationService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> Login()
+        #region Login
+        public ActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
-        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
@@ -44,16 +45,16 @@ namespace MakeIt.WebUI.Controllers
                 switch (result)
                 {
                     case SignInStatus.Success:
-                        _authorizationService.ResetAccessFailedCount(userDTO);
+                        await _authorizationService.ResetAccessFailedCount(userDTO);
 
                         if (true) // TODO check role
                             return Redirect("/Cabinet/Index");
 
-                        //ModelState.AddModelError("Password", "Not enough access rights!");
-                        //return View(model);
+                    //ModelState.AddModelError("Password", "Not enough access rights!");
+                    //return View(model);
 
                     case SignInStatus.LockedOut:
-                        return View(model); //TODO BlockedAccount page
+                        return View("BlockedAccount");
 
                     case SignInStatus.Failure:
                         ModelState.AddModelError("Password", "Wrong password");
@@ -71,22 +72,19 @@ namespace MakeIt.WebUI.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+        #endregion
 
-        // GET: /Account/Register
-        [HttpGet]
-        [AllowAnonymous]
-        public async Task<ActionResult> Register(string returnUrl)
+        #region Register
+        public ActionResult Register(string returnUrl)
         {
-            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Cabinet");
-            }
+            //if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("Index", "Cabinet");
+            //}
             return View(new RegisterViewModel(ConfigurationManager.AppSettings["RecaptchaPublicKey"]));
         }
 
-        // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
         [ValidateRecaptcha]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model, string returnUrl)
@@ -114,27 +112,145 @@ namespace MakeIt.WebUI.Controllers
             }
             return View(new RegisterViewModel(ConfigurationManager.AppSettings["RecaptchaPublicKey"])); ;
         }
+        #endregion
 
-        // GET: /Account/ConfirmEmail
-        [AllowAnonymous]
+        #region ConfirmEmail
         public ActionResult ConfirmEmail(string email)
         {
             ViewBag.Email = email;
             return View();
         }
 
-        [AllowAnonymous]
         public async Task<ActionResult> ConfirmUserEmail(string userId, string code)
         {
-           // TODO
+            var userDTO = await _authorizationService.FindByIdAsync(userId);
+            if (_authorizationService.IsTokenExpired(userDTO, code))
+            {
+                return View("CrashedLink");
+            }
+            var result = await _authorizationService.ConfirmEmailAsync(userDTO, code);
+            if (result.Succeeded)
+                return View("DisplayConfirmedEmail");
+            AddErrors(result);
             return View();
         }
+        #endregion
 
-        // GET: /Account/ForgotPassword
-        [AllowAnonymous]
+        #region ForgotPassword
         public ActionResult ForgotPassword()
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var userDTO = await _authorizationService.FindByEmailAsync(model.Email);
+                if (userDTO == null)
+                {
+                    ModelState.AddModelError("Email", "Incorrect Email");
+                    return View(model);
+                }
+                if (!(await _authorizationService.IsEmailConfirmedAsync(userDTO.Id)))
+                {
+                    ModelState.AddModelError("Email", "Email isn`t confirmed");
+                    return View(model);
+                }
+        
+                // Sending Email
+                var code = await _authorizationService.GeneratePasswordResetToken(userDTO.Id);
+                var callbackUrl = Url.Action("ResetPassword", "Account",
+                                            new { UserId = userDTO.Id, code = code }, protocol: Request.Url.Scheme);
+
+                await _authorizationService.SendEmailAsync(userDTO.Id, "Account Password Reset",
+                          "To continue the procedure for resetting your account password, follow the link:\n" + callbackUrl);
+
+                return RedirectToAction("ConfirmForgotPassword", "Account", new { email = userDTO.Email });
+            }
+            return View(model);
+        }
+
+        public ActionResult CrashedLinkResetPassword()
+        {
+            return View();
+        }
+
+        public ActionResult ConfirmForgotPassword(string email)
+        {
+            ViewBag.Email = email;
+            return View();
+        }
+        #endregion
+
+        #region ResetPassword
+        public async Task<ActionResult> ResetPassword(string userId, string code)
+        {
+            TempData["UserId"] = userId;
+            var userDTO = await _authorizationService.FindByIdAsync(userId);
+            if (userDTO == null)
+            {
+                ViewBag.errorMessage = "User is not found.";
+                return View("Error");
+            }
+            if (_authorizationService.IsTokenExpired(userDTO, code) || code == null)
+            {
+                return View("CrashedLink");
+            }
+            return View("ResetPassword");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var userId = TempData["UserId"].ToString();
+            var userDTO = await _authorizationService.FindByIdAsync(userId);
+
+            if (_authorizationService.IsTokenExpired(userDTO, model.Code))
+            {
+                return View("CrashedLink");
+            }
+
+            if (userDTO == null)
+            {
+                ModelState.AddModelError("Email", "Incorrect Email");
+                return View(model);
+            }
+            var result = await _authorizationService.ResetPasswordAsync(int.Parse(userId), model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("DisplayPasswordWasChanged", "Account");
+            }
+            AddErrors(result);
+            return View();
+        }
+        #endregion
+
+        public ActionResult DisplayPasswordWasChanged()
+        {
+            return View();
+        }
+
+        public ActionResult LogOff()
+        {
+            _authorizationService.SignOut();
+            return RedirectToAction("Login", "Account");
+        }
+
+        #region Additional methods
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
+            }
+        } 
+        #endregion
     }
 }

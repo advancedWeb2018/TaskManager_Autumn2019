@@ -188,8 +188,10 @@
     <Compile Include="ReCaptchaV3\InvisibleRecaptchaValidationService.cs" />
     <Compile Include="ReCaptchaV3\ValidateRecaptchaAttribute.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="ViewModel\Account\LoginViewModel.cs" />
     <Compile Include="ViewModel\Account\RegisterViewModel.cs" />
+    <Compile Include="ViewModel\Account\ResetPasswordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.css" />
@@ -292,12 +294,12 @@
     <Content Include="Views\Account\BlockedAccount.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ConfirmForgotPassword.cshtml" />
-    <Content Include="Views\Account\CrashedLinkConfirmEmail.cshtml" />
+    <Content Include="Views\Account\CrashedLink.cshtml" />
     <Content Include="Views\Account\DisplayConfirmedEmail.cshtml" />
     <Content Include="Views\Account\DisplayPasswordWasChanged.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
-    <Content Include="Views\Account\ResetPassword.cshtml" />
     <None Include="Properties\PublishProfiles\ MakeItSite.pubxml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MakeIt.BLL\MakeIt.BLL.csproj">

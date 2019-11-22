@@ -1,5 +1,4 @@
-﻿using MakeIt.WebUI.ReCaptchaV3;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace MakeIt.WebUI
 {
@@ -8,7 +7,7 @@ namespace MakeIt.WebUI
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new RequireHttpsAttribute());
+            //filters.Add(new RequireHttpsAttribute());
         }
     }
 }

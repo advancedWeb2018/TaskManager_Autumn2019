@@ -41,13 +41,14 @@ namespace MakeIt.BLL.IdentityConfig
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
             });
+
             this.EmailService = new EmailService();
 
-            //var dataProtectionProvider = options.DataProtectionProvider;
-
             IDataProtector dataProtector = dataProtectionProvider.Create("ASP.NET Identity");
-
-            this.UserTokenProvider = new DataProtectorTokenProvider<User, int>(dataProtector);
+            this.UserTokenProvider = new DataProtectorTokenProvider<User, int>(dataProtector)
+            {
+                TokenLifespan = TimeSpan.FromMinutes(30)
+            };
         }
 
         public override Task<IdentityResult> CreateAsync(User user)

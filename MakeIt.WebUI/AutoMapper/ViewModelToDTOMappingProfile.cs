@@ -10,11 +10,17 @@ namespace MakeIt.WebUI.AutoMapper
         {
             // create mapping           
             CreateMap<LoginViewModel, UserAuthDTO>()
-                 .ForMember(x => x.UserName, opt => opt.Ignore())
-                 .ForMember(x => x.ConfirmPassword, opt => opt.Ignore());
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.RememberMe, opt => opt.MapFrom(src => src.RememberMe))
+                .ForAllOtherMembers(x => x.Ignore()); 
+
             CreateMap<RegisterViewModel, UserAuthDTO>()
-                 .ForMember(x => x.RememberMe, opt => opt.Ignore())
-                 .ForMember(x => x.ConfirmPassword, opt => opt.Ignore());
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
+                .ForMember(dest => dest.ConfirmPassword, opt => opt.MapFrom(src => src.ConfirmPassword))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
+                .ForAllOtherMembers(x => x.Ignore()); ;
 
             // TODO another maps for another issues
             // depending on the task

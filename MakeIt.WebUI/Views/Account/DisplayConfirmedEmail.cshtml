@@ -1,25 +1,20 @@
 ﻿@{
-    ViewBag.Title = "Email подтвержден";
+    ViewBag.Title = "MakeIt";
 }
 
-<div class="checkForm confirmEmail">
-    <div class="headerSmallScreen">
-        <a href='@Url.Action("Index", "StartPage")'>
-            <img src='@Url.Content("~/Content/img/logo.png")' alt="logo" />
-        </a>
-    </div>
-
-
+<div class="panel-body">
     <form>
         <fieldset>
-            <legend>
-                Email подтвержден<span>
-                    Вы удачно подтвердили вашу электронную почту. Теперь вы можете
-                    войти в кабинет
+            <h3>
+                Email confirmed
+            </h3>
+            <div class="form-group">
+                <p>
+                    You have successfully verified your email.
+                </p>
+                <span>
+                    @Html.ActionLink("Now you can enter into MakeIt", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "text-light bg-dark" })
                 </span>
-            </legend>
-            <div class="checkFormWrapBtn">
-                @Html.ActionLink("Вход", "Login", "Account", routeValues: null, htmlAttributes: new { @class = "fullBg btn"})
             </div>
         </fieldset>
     </form>

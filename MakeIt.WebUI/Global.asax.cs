@@ -19,7 +19,7 @@ namespace MakeIt.WebUI
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            AntiForgeryConfig.RequireSsl = true;
+            //AntiForgeryConfig.RequireSsl = true;
         }
     }
 }
