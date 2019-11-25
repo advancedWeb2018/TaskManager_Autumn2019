@@ -1,35 +1,29 @@
 ﻿using AutoMapper;
-using System.Web.Mvc;
-using System;
+using MakeIt.Repository.UnitOfWork;
+using MakeIt.WebUI.ViewModel.Task;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using MakeIt.WebUI.ViewModel.Task;
 using System.Web.Mvc;
-using MakeIt.Repository.UnitOfWork;
-using System.Web.Security;
-using System.Security.Principal;
 
 namespace MakeIt.WebUI.Controllers
 {
     public class CabinetController : BaseController
     {
-        private string _user;
-        UnitOfWork unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
-        public CabinetController(IMapper mapper) : base(mapper)
+        public CabinetController(IMapper mapper, IUnitOfWork unitOfWork) : base(mapper)
         {
-            unitOfWork = new UnitOfWork();
+            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
         public ActionResult Index()
         {
-            var userCurrentTasks = unitOfWork.Tasks.GetAll();
-           var userOldTasks = unitOfWork.Tasks.GetAll();
+            var userCurrentTasks = _unitOfWork.Tasks.GetAll().ToList();
+            //var userOldTasks = _unitOfWork.Tasks.GetAll();
 
-            List<TaskShowViewModel> taskDisplay = new List<TaskShowViewModel>();/*
-            foreach(var test in userCurrentTasks)
+            List<TaskShowViewModel> taskDisplay = new List<TaskShowViewModel>();
+            foreach (var test in userCurrentTasks)
             {
                 TaskShowViewModel task = new TaskShowViewModel();
                 task.AssignedUser = test.AssignedUser.UserName.ToString();
@@ -38,12 +32,11 @@ namespace MakeIt.WebUI.Controllers
                 task.Project = test.Project.Name;
                 task.Milestone = test.Milestone.Title;
                 taskDisplay.Add(task);
-            }*/
+            }
             ViewBag.CurrentTask = taskDisplay;
             //ViewBag.OldTask = userOldTasks;
             ViewBag.User = User.Identity.Name;
-            return View();           
+            return View();
         }
-
     }
 }
