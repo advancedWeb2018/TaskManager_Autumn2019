@@ -1,0 +1,50 @@
+﻿
+@{
+     Layout = "~/Views/Shared/_Layout_Cabinet.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create Task</title>
+</head>
+<body>
+    <div>
+        @using (Html.BeginForm("SaveTask", "EditTask", FormMethod.Post))
+        {
+            <p>
+                Title
+                @Html.TextBox("Title")
+            </p>
+            <p>
+                Project
+                @Html.DropDownList("Project", ViewBag.Project as SelectList)
+            </p>
+
+            <p>
+                Priority
+                @Html.DropDownList("Priority", ViewBag.Priority as SelectList)
+            </p>
+            <p>
+                Milestone
+                @Html.DropDownList("Milestone", ViewBag.Milestone as SelectList)
+
+            </p>
+            <p>
+                Description
+                @Html.TextArea("Description", "")
+            </p>
+            <p>
+                DueDate
+                @Html.TextBox("DueDate")
+            </p>
+
+
+
+            <tr><td><input type="submit" value="Save" /></td></tr>
+          }
+    </div>
+</body>
+</html>

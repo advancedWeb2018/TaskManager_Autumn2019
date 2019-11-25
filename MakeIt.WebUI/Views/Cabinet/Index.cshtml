@@ -1,6 +1,59 @@
 ﻿@{
     ViewBag.Title = "MakeIt";
 }
-<div>
-    Example
-</div>
+
+<html>
+<body>
+    <div>
+        @using (Html.BeginForm("Index", "EditTask", FormMethod.Post))
+        {
+          <p>  
+              <input type="hidden" value="@ViewBag.User"/>
+              <input type="submit" style="text-align:right; color:white; background-color:green" value="Create new task" />
+        </p>        
+        }
+        
+    </div>
+    <div>
+        @Html.Label("Assigned to Me")
+
+        <table class="table">
+            <tr>
+                <td>
+                    Project
+                </td>
+                <td>
+                    Title
+                </td>
+                <td>
+                    Mailstone
+                </td>
+                <td>
+                    Assigned
+                </td>
+            </tr>
+            @foreach (var current in ViewBag.CurrentTask)
+            {
+        <tr>
+            <td>
+                @current.Priority
+            </td>
+            <td>
+                @current.Project
+            </td>
+            <td>
+                <a href="">@current.Title</a>
+            </td>
+            <td>
+                @current.Mailstone
+            </td>
+            <td>
+                @current.AssignedUser
+            </td>
+        </tr>
+            }
+        </table>
+        
+    </div>
+</body>
+</html>
