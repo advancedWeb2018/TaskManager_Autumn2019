@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 namespace MakeIt.WebUI.Controllers
 {
+    [Authorize]
     public class CabinetController : BaseController
     {
         public CabinetController(IMapper mapper) : base(mapper)
