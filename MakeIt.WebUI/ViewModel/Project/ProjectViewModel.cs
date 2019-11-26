@@ -5,7 +5,7 @@ namespace MakeIt.WebUI.ViewModel
 {
     public class ProjectViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required(ErrorMessage = "Name is required")]
         [Display(Name = "Name")]
@@ -15,6 +15,6 @@ namespace MakeIt.WebUI.ViewModel
         public string Description { get; set; }
 
         [Display(Name = "Last Update Date")]
-        public DateTime LastUpdateDate { get; set; }
+        public DateTime? LastUpdateDate { get; set; }
     }
 }

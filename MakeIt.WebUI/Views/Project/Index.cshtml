@@ -34,11 +34,12 @@
                             <tbody>
                                 @foreach (var project in Model)
                                 {
-                                    <tr class="odd gradeX">
-                                        <td>@project.Name</td>
-                                        <td>@project.Description</td>
-                                        <td>@project.LastUpdateDate</td>
-                                    </tr>
+                                <tr class="odd gradeX">
+                                    <td hidden>@project.Id</td>
+                                    <td>@project.Name</td>
+                                    <td>@project.Description</td>
+                                    <td>@project.LastUpdateDate</td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
