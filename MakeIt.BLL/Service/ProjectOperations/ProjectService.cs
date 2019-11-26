@@ -10,7 +10,8 @@ namespace MakeIt.BLL.Service.ProjectOperations
     public interface IProjectService : IEntityService<Project>
     {
         IEnumerable<ProjectDTO> GetUserProjectsById(int userId);
-        ProjectDTO CreateProject(ProjectDTO project, int ownerId);
+        void CreateProject(ProjectDTO project, int ownerId);
+        void EditProject(ProjectDTO project);
     }
 
     public class ProjectService : EntityService<Project>, IProjectService
@@ -23,7 +24,7 @@ namespace MakeIt.BLL.Service.ProjectOperations
             _unitOfWork = uow;
         }
 
-        public ProjectDTO CreateProject(ProjectDTO project, int ownerId)
+        public void CreateProject(ProjectDTO project, int ownerId)
         {
             var projectAdded = new Project
             {
@@ -36,7 +37,18 @@ namespace MakeIt.BLL.Service.ProjectOperations
                 _unitOfWork.GetRepository<Project>().Add(projectAdded);
                 _unitOfWork.SaveChanges();
             };
-            return _mapper.Map<ProjectDTO>(projectAdded);
+        }
+
+        public void EditProject(ProjectDTO project)
+        {
+            var projectEdited = _unitOfWork.GetRepository<Project>().Get(project.Id);
+            projectEdited.Name = project.Name;
+            projectEdited.Description = project.Description;
+            using (_unitOfWork)
+            {
+                _unitOfWork.GetRepository<Project>().Edit(projectEdited);
+                _unitOfWork.SaveChanges();
+            };
         }
 
         public IEnumerable<ProjectDTO> GetUserProjectsById(int userId)

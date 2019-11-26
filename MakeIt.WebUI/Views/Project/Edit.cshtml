@@ -14,7 +14,7 @@
     </div>
     <!-- /.row -->
 
-    @using (Html.BeginForm("Edit", "Project", FormMethod.Post, new { @role = "form" }))
+    @using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @role = "form" }))
     {
         @Html.AntiForgeryToken()
         <fieldset>

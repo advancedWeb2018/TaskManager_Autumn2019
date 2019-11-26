@@ -27,26 +27,24 @@ namespace MakeIt.WebUI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit()
+        public ActionResult Edit(ProjectViewModel model)
         {
-            return View();
+            return View(model);
         }
 
         [HttpPost]
-        public ActionResult Edit(ProjectViewModel model)
+        public ActionResult EditProject(ProjectViewModel model)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return View("Edit", model);
             }
             int userId = User.Identity.GetUserId<int>();
             var projectDTO = _mapper.Map<ProjectDTO>(model);
             if (model.Id == null)
-            {
-                var projectDTOAdded = _projectService.CreateProject(projectDTO, userId);
-                return RedirectToAction("Index", "Project");
-            }
-            return View();
+                _projectService.CreateProject(projectDTO, userId);
+            else _projectService.EditProject(projectDTO);
+            return RedirectToAction("Index", "Project");
         }
     }
 }
