@@ -238,6 +238,8 @@
     <!-- /#wrapper -->
     <!-- jQuery -->
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
 
     <!-- Bootstrap Core JavaScript -->
     @Scripts.Render("~/bundles/bootstrap")
@@ -247,11 +249,6 @@
 
     <!-- Custom Theme JavaScript -->
     @Scripts.Render("~/bundles/sb-admin-2")
-
-    <!-- Morris Charts JavaScript -->
-    <script src="~/Scripts/plugins/morris/raphael.min.js"></script>
-    <script src="~/Scripts/plugins/morris/morris.min.js"></script>
-    <script src="~/Scripts/plugins/morris/morris-data.js"></script>
 
     @RenderSection("scripts", required: false)
 </body>
