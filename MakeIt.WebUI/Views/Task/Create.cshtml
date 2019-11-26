@@ -1,18 +1,18 @@
 ﻿
 @{
-     Layout = "~/Views/Shared/_Layout_Cabinet.cshtml";
+    Layout = "~/Views/Shared/_Layout_Cabinet.cshtml";
 }
 
-<!DOCTYPE html>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create Task</title>
-</head>
-<body>
+<div id="page-wrapper">
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h1 class="page-header">Create Task</h1>
+        </div>
+    </div>
     <div>
-        @using (Html.BeginForm("SaveTask", "EditTask", FormMethod.Post))
+        @using (Html.BeginForm("Save", "Task", FormMethod.Post))
         {
             <p>
                 Title
@@ -33,18 +33,22 @@
 
             </p>
             <p>
+                User
+                @Html.DropDownList("Users", ViewBag.Users as SelectList)
+            </p>
+            <p>
                 Description
                 @Html.TextArea("Description", "")
             </p>
             <p>
                 DueDate
-                @Html.TextBox("DueDate")
+                @Html.TextBox("DueDate")               
             </p>
 
 
 
             <tr><td><input type="submit" value="Save" /></td></tr>
-          }
+            <tr><td><button type="button" onclick="javascript:history.back()">Cancel</button></td></tr>
+        }
     </div>
-</body>
-</html>
+</div>

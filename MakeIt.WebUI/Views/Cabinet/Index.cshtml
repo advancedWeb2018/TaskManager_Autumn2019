@@ -2,58 +2,64 @@
     ViewBag.Title = "MakeIt";
 }
 
-<html>
-<body>
-    <div>
-        @using (Html.BeginForm("Index", "EditTask", FormMethod.Post))
-        {
-          <p>  
-              <input type="hidden" value="@ViewBag.User"/>
-              <input type="submit" style="text-align:right; color:white; background-color:green" value="Create new task" />
-        </p>        
-        }
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-10">
+                <h1 class="page-header">Dashboard</h1>
+            </div>
+            <div class="col-lg-2">
+                <button type="button" onclick="location.href='@Url.Action("Create", "Task")'" class="page-header btn btn-success">Create new task</button>
+            </div>
+        </div>
         
-    </div>
-    <div>
-        @Html.Label("Assigned to Me")
+        <div>
 
-        <table class="table">
-            <tr>
-                <td>
-                    Project
-                </td>
-                <td>
-                    Title
-                </td>
-                <td>
-                    Mailstone
-                </td>
-                <td>
-                    Assigned
-                </td>
-            </tr>
-            @foreach (var current in ViewBag.CurrentTask)
+            @Html.Label("Assigned to Me")
+            @if (ViewBag.CurrentTask.Count == 0)
             {
-        <tr>
-            <td>
-                @current.Priority
-            </td>
-            <td>
-                @current.Project
-            </td>
-            <td>
-                <a href="">@current.Title</a>
-            </td>
-            <td>
-                @current.Mailstone
-            </td>
-            <td>
-                @current.AssignedUser
-            </td>
-        </tr>
+                <br><tr style="text-align:center">Sorry, but user doesn't have assigned tasks...</tr>
             }
-        </table>
-        
-    </div>
-</body>
-</html>
+            else
+            {
+
+                <table class="table">
+                    <tr>
+                        <td>
+                            Project
+                        </td>
+                        <td>
+                            Title
+                        </td>
+                        <td>
+                            Mailstone
+                        </td>
+                        <td>
+                            Assigned
+                        </td>
+                    </tr>
+
+                    foreach (var current in ViewBag.CurrentTask)
+                    {
+                    <tr>
+                        <td>
+                            current.Priority
+                        </td>
+                        <td>
+                            current.Project
+                        </td>
+                        <td>
+                            <a href="">current.Title</a>
+                        </td>
+                        <td>
+                            current.Mailstone
+                        </td>
+                        <td>
+                            current.AssignedUser
+                        </td>
+                    </tr>
+                    }
+
+                </table>
+            }
+        </div>
+        </div>
