@@ -48,7 +48,7 @@ namespace MakeIt.WebUI.Controllers
                         await _authorizationService.ResetAccessFailedCount(userDTO);
 
                         if (true) // TODO check role
-                            return Redirect("/Cabinet/Index");
+                            return Redirect("/Project/Index");
 
                     //ModelState.AddModelError("Password", "Not enough access rights!");
                     //return View(model);

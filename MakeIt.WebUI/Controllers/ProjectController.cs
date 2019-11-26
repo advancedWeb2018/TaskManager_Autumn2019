@@ -21,7 +21,7 @@ namespace MakeIt.WebUI.Controllers
         {
             int userId = User.Identity.GetUserId<int>();
             var projectDTOList = _projectService.GetUserProjectsById(userId);
-            var projectViewModelList = _mapper.Map<IEnumerable<ProjectViewModel>>(projectDTOList);
+            //var projectViewModelList = _mapper.Map<IEnumerable<ProjectViewModel>>(projectDTOList);
             return View();
         }
 
