@@ -19,18 +19,22 @@ namespace MakeIt.WebUI.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            var userCurrentTasks = _unitOfWork.Tasks.GetAll().ToList();
+            var currentUser = User.Identity.Name;
+            var currentUserID = _unitOfWork.Users.GetAll().First(user => user.UserName.ToUpper().Equals(currentUser.ToUpper())).Id;
+            var userCurrentTasks = _unitOfWork.Tasks.GetAll().ToList();//.Where(task => task.AssignedUser.Equals(currentUserID)).ToList();
             //var userOldTasks = _unitOfWork.Tasks.GetAll();
 
             List<TaskShowViewModel> taskDisplay = new List<TaskShowViewModel>();
             foreach (var test in userCurrentTasks)
             {
-                TaskShowViewModel task = new TaskShowViewModel();
-                task.AssignedUser = test.AssignedUser.UserName.ToString();
+                TaskShowViewModel task = new TaskShowViewModel();                
                 task.Title = test.Title;
                 task.Priority = test.Priority.Name;
                 task.Project = test.Project.Name;
-                task.Milestone = test.Milestone.Title;
+                if (test.Milestone != null)
+                    task.Milestone = test.Milestone.Title;
+                else
+                    task.Milestone = "";
                 taskDisplay.Add(task);
             }
             ViewBag.CurrentTask = taskDisplay;

@@ -180,7 +180,7 @@
     <Compile Include="Controllers\CabinetController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\EditTaskController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -304,7 +304,7 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <None Include="Properties\PublishProfiles\ MakeItSite.pubxml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
-    <Content Include="Views\EditTask\Index.cshtml" />
+    <Content Include="Views\Task\Create.cshtml" />
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Project\_ViewStart.cshtml" />
