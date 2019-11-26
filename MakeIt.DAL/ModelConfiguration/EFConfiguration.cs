@@ -23,8 +23,11 @@ namespace MakeIt.DAL.ModelConfiguration
         {
             public ProjectConfiguration()
             {
-                HasIndex(p => p.Name).IsUnique();
                 Property(p => p.Name).IsRequired().HasMaxLength(20);
+                Property(p => p.Description).HasMaxLength(500);
+                HasRequired<User>(p =>p.Owner)
+                    .WithMany(u => u.CreatedProjects)
+                    .Map(m => m.MapKey("OwnerId"));
                 ToTable("Project");
             }
         }

@@ -13,7 +13,14 @@ namespace MakeIt.BLL.AutoMapper
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.PasswordHash))
-                .ForAllOtherMembers(x => x.Ignore()); 
+                .ForAllOtherMembers(x => x.Ignore());
+
+            CreateMap<Project, ProjectDTO>()
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+               .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+               .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+               .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
+               .ForAllOtherMembers(x => x.Ignore());
 
             // TODO another maps for another issues
             // depending on the task

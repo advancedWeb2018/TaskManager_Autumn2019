@@ -1,5 +1,5 @@
 ﻿using MakeIt.DAL.EF;
-using MakeIt.Repository.BaseRepository;
+using MakeIt.Repository.GenericRepository;
 using System.Data.Entity;
 
 namespace MakeIt.Repository.Repository

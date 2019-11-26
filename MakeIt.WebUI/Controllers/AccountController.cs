@@ -2,7 +2,7 @@
 using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.Authorithation;
 using MakeIt.WebUI.ReCaptchaV3;
-using MakeIt.WebUI.ViewModel.Account;
+using MakeIt.WebUI.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Configuration;
@@ -230,12 +230,12 @@ namespace MakeIt.WebUI.Controllers
             AddErrors(result);
             return View();
         }
-        #endregion
 
         public ActionResult DisplayPasswordWasChanged()
         {
             return View();
         }
+        #endregion
 
         public ActionResult LogOff()
         {

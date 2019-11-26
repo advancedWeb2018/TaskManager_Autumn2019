@@ -4,9 +4,9 @@ using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MakeIt.Repository.BaseRepository
+namespace MakeIt.Repository.GenericRepository
 {
-    public abstract class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         protected readonly DbContext _context;
         protected readonly IDbSet<TEntity> _dbset;

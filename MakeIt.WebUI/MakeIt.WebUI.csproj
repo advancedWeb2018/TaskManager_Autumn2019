@@ -177,6 +177,7 @@
     <Compile Include="AutoMapper\DTOToViewModelMappingProfile.cs" />
     <Compile Include="AutoMapper\MapperAutofacModule.cs" />
     <Compile Include="AutoMapper\ViewModelToDTOMappingProfile.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\CabinetController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="ViewModel\Account\LoginViewModel.cs" />
     <Compile Include="ViewModel\Account\RegisterViewModel.cs" />
     <Compile Include="ViewModel\Account\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModel\Project\ProjectViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.css" />
@@ -300,6 +302,9 @@
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <None Include="Properties\PublishProfiles\ MakeItSite.pubxml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Project\_ViewStart.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MakeIt.BLL\MakeIt.BLL.csproj">

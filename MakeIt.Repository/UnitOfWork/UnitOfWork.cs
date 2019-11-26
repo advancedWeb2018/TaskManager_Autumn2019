@@ -1,5 +1,5 @@
 ﻿using MakeIt.DAL.EF;
-using MakeIt.Repository.BaseRepository;
+using MakeIt.Repository.GenericRepository;
 using MakeIt.Repository.Repository;
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace MakeIt.Repository.UnitOfWork
 
             if (!_repositories.ContainsKey(type))
             {
-                var repositoryType = typeof(IGenericRepository<>);
+                var repositoryType = typeof(GenericRepository<>);
                 var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _dbContext);
                 _repositories.Add(type, repositoryInstance);
             }

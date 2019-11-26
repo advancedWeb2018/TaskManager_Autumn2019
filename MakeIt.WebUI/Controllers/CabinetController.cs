@@ -8,6 +8,7 @@ namespace MakeIt.WebUI.Controllers
     {
         public CabinetController(IMapper mapper) : base(mapper)
         {
+
         }
 
         [HttpGet]

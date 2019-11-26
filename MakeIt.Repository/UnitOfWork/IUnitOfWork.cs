@@ -1,4 +1,4 @@
-﻿using MakeIt.Repository.BaseRepository;
+﻿using MakeIt.Repository.GenericRepository;
 using MakeIt.Repository.Repository;
 using System;
 
