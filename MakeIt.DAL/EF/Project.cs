@@ -9,7 +9,9 @@ namespace MakeIt.DAL.EF
         {
             this.Tasks = new HashSet<Task>();
         }
-        public string Name { get; set; }   
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public virtual User Owner { get; set; }
         public virtual ICollection<Task> Tasks { get; set; }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
+using AutoMapper;
 using MakeIt.BLL.Identity;
 using MakeIt.BLL.IdentityConfig;
 using MakeIt.DAL.EF;
+using MakeIt.Repository.GenericRepository;
 using MakeIt.Repository.UnitOfWork;
 using MakeIt.WebUI.AutoMapper;
 using Microsoft.Owin.Security;
@@ -50,6 +52,8 @@ namespace MakeIt.WebUI.App_Start
                 builder.RegisterAssemblyTypes(assembly)
                     .AsImplementedInterfaces().InstancePerLifetimeScope();
             }
+            //register your profiles, or skip this if you don't want them in your container
+            builder.RegisterAssemblyTypes().AssignableTo(typeof(Profile)).As<Profile>();
 
             builder.RegisterType(typeof(UnitOfWork)).As(typeof(IUnitOfWork)).InstancePerRequest();
             builder.RegisterType<MakeItContext>().AsSelf().InstancePerRequest();
@@ -58,7 +62,7 @@ namespace MakeIt.WebUI.App_Start
             builder.Register<IAuthenticationManager>(c => HttpContext.Current.GetOwinContext().Authentication).InstancePerRequest();
             builder.Register(c => new UserStore(c.Resolve<MakeItContext>())).AsImplementedInterfaces().InstancePerRequest();
             builder.Register<IDataProtectionProvider>(c => Startup.DataProtectionProvider).InstancePerRequest();
-    
+
             // Create a new container with the dependencies defined above
             var container = builder.Build();
 

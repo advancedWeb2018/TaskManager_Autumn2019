@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MakeIt.WebUI.ViewModel.Account
+namespace MakeIt.WebUI.ViewModel
 {
     public class RegisterViewModel
     {

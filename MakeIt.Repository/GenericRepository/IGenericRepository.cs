@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace MakeIt.Repository.BaseRepository
+namespace MakeIt.Repository.GenericRepository
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {

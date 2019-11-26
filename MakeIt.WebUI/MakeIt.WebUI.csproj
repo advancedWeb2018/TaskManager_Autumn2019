@@ -181,6 +181,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EditTaskController.cs" />
+    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -193,6 +194,7 @@
     <Compile Include="ViewModel\Account\LoginViewModel.cs" />
     <Compile Include="ViewModel\Account\RegisterViewModel.cs" />
     <Compile Include="ViewModel\Account\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModel\Project\ProjectViewModel.cs" />
     <Compile Include="ViewModel\Task\TaskShowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +305,9 @@
     <None Include="Properties\PublishProfiles\ MakeItSite.pubxml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\EditTask\Index.cshtml" />
+    <Content Include="Views\Project\Edit.cshtml" />
+    <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MakeIt.BLL\MakeIt.BLL.csproj">

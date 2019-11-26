@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace MakeIt.DAL.ModelInitializer
 {
-    class ContextInitializer : DropCreateDatabaseIfModelChanges<MakeItContext>
+    class ContextInitializer : CreateDatabaseIfNotExists<MakeItContext>
     {
         protected override void Seed(MakeItContext context)
         {
