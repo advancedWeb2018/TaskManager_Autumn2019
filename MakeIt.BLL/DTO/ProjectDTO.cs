@@ -8,5 +8,7 @@ namespace MakeIt.BLL.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public bool IsPrivate { get; set; }
+        public bool IsClosed { get; set; }
     }
 }

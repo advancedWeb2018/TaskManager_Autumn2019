@@ -1,4 +1,5 @@
 ﻿using MakeIt.DAL.Common;
+using MakeIt.DAL.Migrations;
 using MakeIt.DAL.ModelInitializer;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
@@ -15,7 +16,8 @@ namespace MakeIt.DAL.EF
         private static MakeItContext _instance;
         static MakeItContext()
         {
-            Database.SetInitializer(new ContextInitializer());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MakeItContext, Configuration>());
+            //Database.SetInitializer(new ContextInitializer());
         }
 
         public MakeItContext()

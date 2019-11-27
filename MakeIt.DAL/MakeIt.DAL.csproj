@@ -103,6 +103,15 @@
     <Compile Include="EF\UserClaim.cs" />
     <Compile Include="EF\UserLogin.cs" />
     <Compile Include="EF\UserRole.cs" />
+    <Compile Include="Migrations\201911261519487_InitialCreate.cs" />
+    <Compile Include="Migrations\201911261519487_InitialCreate.designer.cs">
+      <DependentUpon>201911261519487_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911271339346_MakeItDB-v1.cs" />
+    <Compile Include="Migrations\201911271339346_MakeItDB-v1.designer.cs">
+      <DependentUpon>201911271339346_MakeItDB-v1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfiguration\EFConfiguration.cs" />
     <Compile Include="ModelInitializer\ContextInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -110,6 +119,14 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201911261519487_InitialCreate.resx">
+      <DependentUpon>201911261519487_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911271339346_MakeItDB-v1.resx">
+      <DependentUpon>201911271339346_MakeItDB-v1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

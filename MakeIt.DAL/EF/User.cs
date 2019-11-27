@@ -12,6 +12,7 @@ namespace MakeIt.DAL.EF
         public User()
         {
             CreatedProjects = new HashSet<Project>();
+            RelatedProjects = new HashSet<Project>();
             CreatedTasks = new HashSet<Task>();
             AssignedTasks = new HashSet<Task>();
         }
@@ -20,6 +21,7 @@ namespace MakeIt.DAL.EF
         public DateTime CreateDateTime { get; set; }
         public DateTime EditDateTime { get; set; }
 
+        public virtual ICollection<Project> RelatedProjects { get; set; }
         public virtual ICollection<Project> CreatedProjects { get; set; }
         public virtual ICollection<Task> CreatedTasks { get; set; }
         public virtual ICollection<Task> AssignedTasks { get; set; }
