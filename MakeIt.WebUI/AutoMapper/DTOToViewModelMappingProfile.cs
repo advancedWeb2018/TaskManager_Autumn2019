@@ -27,6 +27,8 @@ namespace MakeIt.WebUI.AutoMapper
               .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
               .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
               .ForMember(dest => dest.LastUpdateDate, opt => opt.MapFrom(src => src.UpdatedDate))
+              //.ForMember(dest => dest.IsClosed, opt => opt.MapFrom(src => src.IsClosed))
+              //.ForMember(dest => dest.IsPrivate, opt => opt.MapFrom(src => src.IsPrivate))
               .ForAllOtherMembers(x => x.Ignore());
 
             // TODO another maps for another issues

@@ -15,7 +15,7 @@ namespace MakeIt.DAL.ModelConfiguration
                 HasRequired<Task>(c => c.Task)
                     .WithMany(t => t.Comments)
                     .Map(m => m.MapKey("TaskId"));
-                ToTable("Comment");
+                ToTable("Comment");            
             }
         }
 
@@ -29,6 +29,16 @@ namespace MakeIt.DAL.ModelConfiguration
                     .WithMany(u => u.CreatedProjects)
                     .Map(m => m.MapKey("OwnerId"));
                 ToTable("Project");
+
+                // configures many-to-many relationship
+                HasMany<User>(p => p.Members)
+               .WithMany(u => u.RelatedProjects)
+               .Map(pu =>
+               {
+                   pu.MapLeftKey("ProjectId");
+                   pu.MapRightKey("UserId");
+                   pu.ToTable("ProjectUser");
+               });
             }
         }
 
