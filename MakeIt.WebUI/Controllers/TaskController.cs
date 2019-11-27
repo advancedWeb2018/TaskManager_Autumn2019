@@ -4,19 +4,23 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using MakeIt.Repository.UnitOfWork;
-using MakeIt.WebUI.ViewModel.Task;
+using MakeIt.WebUI.ViewModel;
+using MakeIt.BLL.DTO;
+using MakeIt.BLL.Service.TaskOperations;
+using Microsoft.AspNet.Identity;
+using AutoMapper;
 
 namespace MakeIt.WebUI.Controllers
 {
-    public class TaskController : Controller
+    [Authorize]
+    public class TaskController : BaseController
     {
+        private readonly ITaskService _taskService;
         private UnitOfWork unitOfWork;
-        // GET: EditTask
-       /* public ActionResult Index()
+        public TaskController(IMapper mapper, ITaskService  taskService) : base(mapper)
         {
-
-            return View();
-        }*/
+            _taskService = taskService;
+        }
 
         [HttpGet]
         public ActionResult Create()
@@ -28,7 +32,7 @@ namespace MakeIt.WebUI.Controllers
             }
             else 
             {
-                return View("/Account/LogOff");
+                return RedirectToAction("LogOff", "Account");
             }
             unitOfWork = new UnitOfWork();
             
@@ -64,32 +68,37 @@ namespace MakeIt.WebUI.Controllers
         [HttpPost]
         public ActionResult Save(TaskShowViewModel newTask)
         {
+            var userId = User.Identity.GetUserId<int>();
             unitOfWork = new UnitOfWork();
             var tt = unitOfWork.Priorities.GetAll().ToList();
             var ttt = tt.First(t => t.Name == "Low");
             //var milestone = unitOfWork.Milestones.GetAll().First(m => m.Title.ToUpper().Equals(newTask.Milestone.ToUpper()));
             var priority = unitOfWork.Priorities.GetAll().ToList().First(p => p.Name.ToUpper().Equals(newTask.Priority.ToUpper()));
             var project = unitOfWork.Projects.GetAll().ToList().First(pr => pr.Name.ToUpper().Equals(newTask.Project.ToUpper()));
-            DAL.EF.Task task = new DAL.EF.Task
+            var model = new TaskShowViewModel
             {
                 Title = newTask.Title,
                 Description = newTask.Description,
                 //Milestone = milestone,
-                Priority = priority,
-                Status = unitOfWork.Statuses.GetAll().First(s => s.Name.ToUpper().Equals(("Open").ToUpper())),
-                Project = project,
-                CreatedDate = DateTime.Now,
+                Priority = newTask.Priority,
+                Status = "Open",
+                Project = newTask.Project,
+                AssignedUser = newTask.AssignedUser,
+                /*CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                //CreatedUser = unitOfWork.Users.GetAll().First(u => u.UserName.ToUpper().Equals(User.Identity.Name.ToUpper())),
-                CreatedUser = unitOfWork.Users.GetAll().First(u => u.UserName.ToUpper().Equals("miron".ToUpper())),
+                CreatedUser = unitOfWork.Users.Get(userId),*/
                 //it's temp behavior
                 DueDate = DateTime.Now.AddDays(5)
             };
 
-            unitOfWork.Tasks.Add(task);
-            unitOfWork.SaveChanges();
-
-            return View("~/Cabinet");
+            /*unitOfWork.Tasks.Add(task);
+            unitOfWork.SaveChanges();*/
+            var taskDTO = _mapper.Map<TaskDTO>(model);
+            if (model.Id == null)
+                _taskService.CreateTask(taskDTO, userId);
+            else _taskService.EditTask(taskDTO);
+            
+            return RedirectToAction("Index", "Cabinet");
         }
 
 
