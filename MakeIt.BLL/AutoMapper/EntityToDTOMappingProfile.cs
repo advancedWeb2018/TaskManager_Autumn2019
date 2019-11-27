@@ -22,6 +22,16 @@ namespace MakeIt.BLL.AutoMapper
                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.UpdatedDate))
                .ForAllOtherMembers(x => x.Ignore());
 
+            CreateMap<Task, TaskDTO>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
+                .ForMember(dest => dest.DueDate, opt => opt.MapFrom(src => src.DueDate))                
+                .ForMember(dest => dest.Project, opt => opt.MapFrom(src => src.Project.Name))
+                .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority.Name))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.Name))
+                .ForMember(dest => dest.AssignedUser, opt => opt.MapFrom(src => src.AssignedUser.UserName))
+                .ForAllOtherMembers(x => x.Ignore());
             // TODO another maps for another issues
             // depending on the task
         }

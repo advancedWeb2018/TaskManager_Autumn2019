@@ -90,6 +90,7 @@
     <Compile Include="Common\IEntityService.cs" />
     <Compile Include="Common\IService.cs" />
     <Compile Include="DTO\ProjectDTO.cs" />
+    <Compile Include="DTO\TaskDTO.cs" />
     <Compile Include="DTO\UserAuthDTO.cs" />
     <Compile Include="Helper\AsyncOutResult.cs" />
     <Compile Include="IdentityConfig\EmailService.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Service\Authorithation\AuthorizationService.cs" />
     <Compile Include="Service\Authorithation\UserManagerExtension.cs" />
     <Compile Include="Service\ProjectOperations\ProjectService.cs" />
+    <Compile Include="Service\TaskOperations\TaskService.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
