@@ -1,5 +1,6 @@
 ﻿using MakeIt.BLL.Enum;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace MakeIt.WebUI.ViewModel
@@ -23,6 +24,9 @@ namespace MakeIt.WebUI.ViewModel
         public bool IsClosed { get; set; }
 
         public RoleInProjectEnum RoleInProject { get; set; }
+
+        public IEnumerable<MemberViewModel> Members { get; set; }
+        public MemberViewModel Owner { get; set; }
     }
 
 }

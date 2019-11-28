@@ -7,8 +7,8 @@ $(document).ready(function () {
         autoFill: true,
         bAutoWidth: true,
         aoColumns: [
-            { sWidth: '15%' },
-            { sWidth: '70%' },
+            { sWidth: '25%' },
+            { sWidth: '60%' },
             { sWidth: '15%' }
         ],
         scrollY: '60vh',

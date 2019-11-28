@@ -42,9 +42,9 @@
                                         <td>
                                             <span>
                                                 @Html.ActionLink(@project.Name, "Edit", "Project",
-                                                new
+                                                new 
                                                 {
-                                                    @project,
+                                                    projectId = @project.Id,
                                                     isNewProject = false
                                                 },
                                                 htmlAttributes: new { @class = "text-dark" })

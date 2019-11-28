@@ -96,6 +96,7 @@
     <Compile Include="Common\IService.cs" />
     <Compile Include="DTO\ProjectDTO.cs" />
     <Compile Include="DTO\TaskDTO.cs" />
+    <Compile Include="DTO\MemberDTO.cs" />
     <Compile Include="DTO\UserAuthDTO.cs" />
     <Compile Include="Enum\ProjectStateEnum.cs" />
     <Compile Include="Enum\RoleInProjectEnum.cs" />

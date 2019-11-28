@@ -198,6 +198,7 @@
     <Compile Include="ViewModel\Account\LoginViewModel.cs" />
     <Compile Include="ViewModel\Account\RegisterViewModel.cs" />
     <Compile Include="ViewModel\Account\ResetPasswordViewModel.cs" />
+    <Compile Include="ViewModel\Project\MemberViewModel.cs" />
     <Compile Include="ViewModel\Project\ProjectViewModel.cs" />
     <Compile Include="ViewModel\Task\TaskShowViewModel.cs" />
   </ItemGroup>
@@ -258,6 +259,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\plugins\dataTables\dataTables.bootstrap.js" />
+    <Content Include="Scripts\plugins\dataTables\projectMemberList.js" />
     <Content Include="Scripts\plugins\dataTables\projectList.js" />
     <Content Include="Scripts\plugins\dataTables\jquery.dataTables.js" />
     <Content Include="Scripts\plugins\flot\excanvas.min.js" />

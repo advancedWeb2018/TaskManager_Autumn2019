@@ -5,11 +5,13 @@
     ViewBag.Title = "MakeIt";
 }
 
+<script defer src="~/Scripts/plugins/dataTables/projectMemberList.js"></script>
+
 <div id="page-wrapper">
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Projects - @ViewBag.ActionDetermination</h1>
+            <h1 class="page-header">Project - @ViewBag.ActionDetermination</h1>
         </div>
     </div>
     <!-- /.row -->
@@ -41,6 +43,34 @@
             </div>
             <!-- /.row -->
         </fieldset>
+    }
+
+    <hr />
+
+    @if (Model!= null)
+    {
+        <div class="row">
+            <h3>Members</h3>
+            <div class="col-lg-2">
+                <table id ="projectMemberTable" class="display table-bordered" cellspacing="0" cellpadding="3" width="100%" style="width: 0px;">
+                    <tbody>
+                        <tr>
+                            <td>@Model.Owner.Name</td>
+                            <td>@Model.Owner.Email</td>
+                            <td><span class="label label-info">Owner</span></td>
+                        </tr>
+                        <tr>
+                            @foreach (var member in Model.Members)
+                            {
+                                <td>@member.Name</td>
+                                <td>@member.Email</td>
+                                <td><span class="label label-default">Member</span></td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     }
 
 </div>

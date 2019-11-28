@@ -13,8 +13,14 @@ namespace MakeIt.WebUI.AutoMapper
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
                 .ForMember(dest => dest.RememberMe, opt => opt.MapFrom(src => src.RememberMe))
-                .ForAllOtherMembers(x => x.Ignore()); 
-            
+                .ForAllOtherMembers(x => x.Ignore());
+
+            CreateMap<MemberDTO, MemberViewModel>()
+              .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+              .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+              .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+              .ForAllOtherMembers(x => x.Ignore());
+
             CreateMap<UserAuthDTO, RegisterViewModel>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.Password, opt => opt.MapFrom(src => src.Password))
@@ -29,6 +35,8 @@ namespace MakeIt.WebUI.AutoMapper
               .ForMember(dest => dest.LastUpdateDate, opt => opt.MapFrom(src => src.UpdatedDate))
               .ForMember(dest => dest.IsClosed, opt => opt.MapFrom(src => src.IsClosed))
               .ForMember(dest => dest.RoleInProject, opt => opt.MapFrom(src => src.RoleInProject))
+              .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.Members))
+              .ForMember(dest => dest.Owner, opt => opt.MapFrom(src => src.Owner))
               .ForAllOtherMembers(x => x.Ignore());
 
             CreateMap<TaskDTO, TaskShowViewModel>()
@@ -41,6 +49,7 @@ namespace MakeIt.WebUI.AutoMapper
                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                .ForMember(dest => dest.AssignedUser, opt => opt.MapFrom(src => src.AssignedUser))
                .ForAllOtherMembers(x => x.Ignore());
+
             // TODO another maps for another issues
             // depending on the task
         }
