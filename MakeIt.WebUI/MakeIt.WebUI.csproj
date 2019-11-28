@@ -211,6 +211,7 @@
     <Content Include="Content\css\plugins\morris.css" />
     <Content Include="Content\css\plugins\social-buttons.css" />
     <Content Include="Content\css\plugins\timeline.css" />
+    <Content Include="Content\css\footer.css" />
     <Content Include="Content\css\sb-admin-2.css" />
     <Content Include="Content\images\logo.svg" />
     <Content Include="font-awesome-4.1.0\css\font-awesome.css" />

@@ -30,6 +30,7 @@ namespace MakeIt.WebUI
             bundles.Add(new StyleBundle("~/Content/commonStyles").Include(
                       "~/Content/css/bootstrap.min.css",
                       "~/Content/css/sb-admin-2.css",
+                      "~/Content/css/footer.css",
                       "~/Content/css/plugins/metisMenu/metisMenu.min.css",
                       "~/font-awesome-4.1.0/css/font-awesome.min.css"));
         }
