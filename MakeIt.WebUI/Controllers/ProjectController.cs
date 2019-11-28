@@ -52,7 +52,7 @@ namespace MakeIt.WebUI.Controllers
 
             var projectEditedDTO = new ProjectDTO();
 
-            ViewBag.ActionDetermination = model.Id == null ? "Created new" : "Edited";
+            ViewBag.ActionDetermination = model.Id == null ? "Just created new" : "Just edited";
 
             if (model.Id == null)
                 projectEditedDTO = _projectService.CreateProject(projectDTO, userId);
