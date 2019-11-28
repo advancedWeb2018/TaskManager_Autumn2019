@@ -1,5 +1,6 @@
 ﻿using MakeIt.BLL.Enum;
 using System;
+using System.Collections.Generic;
 
 namespace MakeIt.BLL.DTO
 {
@@ -11,5 +12,7 @@ namespace MakeIt.BLL.DTO
         public DateTime UpdatedDate { get; set; }
         public bool IsClosed { get; set; }
         public RoleInProjectEnum RoleInProject { get; set; }
+        public IEnumerable<MemberDTO> Members { get; set; }
+        public MemberDTO Owner { get; set; }
     }
 }

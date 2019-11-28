@@ -22,6 +22,12 @@ namespace MakeIt.WebUI.AutoMapper
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.UserName))
                 .ForAllOtherMembers(x => x.Ignore()); ;
 
+            CreateMap<MemberViewModel, MemberDTO>()
+              .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+              .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+              .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+              .ForAllOtherMembers(x => x.Ignore());
+
             CreateMap<ProjectViewModel, ProjectDTO>()
                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
@@ -29,6 +35,8 @@ namespace MakeIt.WebUI.AutoMapper
                .ForMember(dest => dest.UpdatedDate, opt => opt.MapFrom(src => src.LastUpdateDate))
                .ForMember(dest => dest.IsClosed, opt => opt.MapFrom(src => src.IsClosed))
                .ForMember(dest => dest.RoleInProject, opt => opt.MapFrom(src => src.RoleInProject))
+               .ForMember(dest => dest.Members, opt => opt.MapFrom(src => src.Members))
+               .ForMember(dest => dest.Owner, opt => opt.MapFrom(src => src.Owner))
                .ForAllOtherMembers(x => x.Ignore());
 
             CreateMap<TaskShowViewModel, TaskDTO>()
@@ -41,7 +49,7 @@ namespace MakeIt.WebUI.AutoMapper
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.AssignedUser, opt => opt.MapFrom(src => src.AssignedUser))
                 .ForAllOtherMembers(x => x.Ignore());
-
+      
             // TODO another maps for another issues
             // depending on the task
         }

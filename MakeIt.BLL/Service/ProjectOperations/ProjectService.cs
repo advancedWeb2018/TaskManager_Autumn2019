@@ -12,8 +12,9 @@ namespace MakeIt.BLL.Service.ProjectOperations
     public interface IProjectService : IEntityService<Project>
     {
         IEnumerable<ProjectDTO> GetUserProjectsById(int userId);
-        void CreateProject(ProjectDTO project, int ownerId);
-        void EditProject(ProjectDTO project);
+        ProjectDTO GetProjectById(int projectId);
+        ProjectDTO CreateProject(ProjectDTO project, int ownerId);
+        ProjectDTO EditProject(ProjectDTO project);
     }
 
     public class ProjectService : EntityService<Project>, IProjectService
@@ -26,7 +27,7 @@ namespace MakeIt.BLL.Service.ProjectOperations
             _unitOfWork = uow;
         }
 
-        public void CreateProject(ProjectDTO project, int ownerId)
+        public ProjectDTO CreateProject(ProjectDTO project, int ownerId)
         {
             var projectAdded = new Project
             {
@@ -36,28 +37,36 @@ namespace MakeIt.BLL.Service.ProjectOperations
             };
             _unitOfWork.GetRepository<Project>().Add(projectAdded);
             _unitOfWork.SaveChanges();
+            return _mapper.Map<ProjectDTO>(projectAdded);
         }
 
-        public void EditProject(ProjectDTO project)
+        public ProjectDTO EditProject(ProjectDTO project)
         {
             var projectEdited = _unitOfWork.GetRepository<Project>().Get(project.Id);
             projectEdited.Name = project.Name;
             projectEdited.Description = project.Description;
             _unitOfWork.GetRepository<Project>().Edit(projectEdited);
             _unitOfWork.SaveChanges();
+            return _mapper.Map<ProjectDTO>(projectEdited);
+        }
+
+        public ProjectDTO GetProjectById(int projectId)
+        {
+            var project = _unitOfWork.GetRepository<Project>().Get(projectId);
+            return _mapper.Map<ProjectDTO>(project);
         }
 
         public IEnumerable<ProjectDTO> GetUserProjectsById(int userId)
         {
             // Owner projects
             var projectOwnerList = _unitOfWork.GetRepository<Project>()
-                .Find(p => p.Owner.Id == userId);
+                .Find(p => p.Owner.Id == userId).ToList();
             var projectOwnerDTOList = _mapper.Map<IEnumerable<ProjectDTO>>(projectOwnerList);
             projectOwnerDTOList.ToList().ForEach(p => p.RoleInProject = RoleInProjectEnum.Owner);
 
             // Member projects
             var projectMemberList = _unitOfWork.GetRepository<Project>()
-                .Find(p=>p.Members.Where(m => m.Id == userId).Any());
+                .Find(p=>p.Members.Where(m => m.Id == userId).Any()).ToList();
             var projectMemberDTOList = _mapper.Map<IEnumerable<ProjectDTO>>(projectMemberList);
             projectMemberDTOList.ToList().ForEach(p => p.RoleInProject = RoleInProjectEnum.Member);
 
