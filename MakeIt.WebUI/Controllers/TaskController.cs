@@ -58,7 +58,7 @@ namespace MakeIt.WebUI.Controllers
 
             var users = unitOfWork.Users.GetAll();//.ToList();
             var userNames = from u in users select u.UserName;
-            SelectList usersNames= new SelectList(userNames, "Users");
+            SelectList usersNames= new SelectList(userNames, "AssignedUser");
             ViewBag.Users = usersNames;
 
             ViewBag.User = currentUser;
@@ -69,30 +69,18 @@ namespace MakeIt.WebUI.Controllers
         public ActionResult Save(TaskShowViewModel newTask)
         {
             var userId = User.Identity.GetUserId<int>();
-            unitOfWork = new UnitOfWork();
-            var tt = unitOfWork.Priorities.GetAll().ToList();
-            var ttt = tt.First(t => t.Name == "Low");
-            //var milestone = unitOfWork.Milestones.GetAll().First(m => m.Title.ToUpper().Equals(newTask.Milestone.ToUpper()));
-            var priority = unitOfWork.Priorities.GetAll().ToList().First(p => p.Name.ToUpper().Equals(newTask.Priority.ToUpper()));
-            var project = unitOfWork.Projects.GetAll().ToList().First(pr => pr.Name.ToUpper().Equals(newTask.Project.ToUpper()));
+            unitOfWork = new UnitOfWork();                        
             var model = new TaskShowViewModel
             {
                 Title = newTask.Title,
                 Description = newTask.Description,
-                //Milestone = milestone,
                 Priority = newTask.Priority,
                 Status = "Open",
                 Project = newTask.Project,
                 AssignedUser = newTask.AssignedUser,
-                /*CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now,
-                CreatedUser = unitOfWork.Users.Get(userId),*/
-                //it's temp behavior
-                DueDate = DateTime.Now.AddDays(5)
+                DueDate = newTask.DueDate
             };
 
-            /*unitOfWork.Tasks.Add(task);
-            unitOfWork.SaveChanges();*/
             var taskDTO = _mapper.Map<TaskDTO>(model);
             if (model.Id == null)
                 _taskService.CreateTask(taskDTO, userId);
@@ -101,6 +89,10 @@ namespace MakeIt.WebUI.Controllers
             return RedirectToAction("Index", "Cabinet");
         }
 
+        public ActionResult Show(TaskShowViewModel task)
+        {
 
+            return View(task);
+        }
     }
 }

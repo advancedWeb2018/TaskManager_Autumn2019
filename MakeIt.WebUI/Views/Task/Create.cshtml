@@ -1,4 +1,14 @@
-﻿@using MakeIt.WebUI.ViewModel
+﻿<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#datepicker").datepicker();
+    });
+</script>
+
+@using MakeIt.WebUI.ViewModel
 
 @model TaskShowViewModel
 @{
@@ -28,15 +38,10 @@
             <p>
                 Priority
                 @Html.DropDownList("Priority", ViewBag.Priority as SelectList)
-            </p>
+            </p>            
             <p>
-                Milestone
-                @Html.DropDownList("Milestone", ViewBag.Milestone as SelectList)
-
-            </p>
-            <p>
-                User
-                @Html.DropDownList("Users", ViewBag.Users as SelectList)
+                Assigne to user
+                @Html.DropDownList("AssignedUser", ViewBag.Users as SelectList)
             </p>
             <p>
                 Description
@@ -44,7 +49,7 @@
             </p>
             <p>
                 DueDate
-                @Html.TextBox("DueDate")               
+                <input type="text" id="datepicker" name="DueDate">
             </p>
 
 
@@ -54,3 +59,4 @@
         }
     </div>
 </div>
+
