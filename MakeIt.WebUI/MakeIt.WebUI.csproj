@@ -315,6 +315,8 @@
     <Content Include="Views\Project\Edit.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
     <Content Include="Views\Project\_ViewStart.cshtml" />
+    <Content Include="Views\Task\Show.cshtml" />
+    <Content Include="Views\Task\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MakeIt.BLL\MakeIt.BLL.csproj">
