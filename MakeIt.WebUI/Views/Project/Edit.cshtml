@@ -5,7 +5,9 @@
     ViewBag.Title = "MakeIt";
 }
 
-<script defer src="~/Scripts/plugins/dataTables/projectMemberList.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.0/dist/latest/bootstrap-autocomplete.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+<script defer src="~/Scripts/fillEmailInput.js"></script>
 
 <div id="page-wrapper">
 
@@ -47,12 +49,12 @@
 
     <hr />
 
-    @if (Model!= null)
+    @if (Model != null)
     {
         <div class="row">
             <h3>Members</h3>
             <div class="col-lg-2">
-                <table id ="projectMemberTable" class="display table-bordered" cellspacing="0" cellpadding="3" width="100%" style="width: 0px;">
+                <table class="table table-bordered" cellspacing="0" cellpadding="3" width="100%" style="width: 0px;">
                     <tbody>
                         <tr>
                             <td>@Model.Owner.Name</td>
@@ -69,6 +71,19 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <hr />
+        <div class="container">
+            <div class="form-group row">
+                <h4>Send an invite to join</h4>
+                <div class="col-lg-4">
+                    <input class="form-control basicAutoComplete" type="text" autocomplete="off" placeholder="Enter email">
+                </div>
+                <div class="col-lg-2">
+                    <button type="submit" value="enter" class="btn btn-success">Submit</button>
+                </div>
             </div>
         </div>
     }

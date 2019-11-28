@@ -243,6 +243,13 @@ namespace MakeIt.WebUI.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        [HttpGet]
+        public JsonResult GetUserEmailList(string q)
+        {
+            var emailListDTO = _authorizationService.GetEmailListContainsString(q);
+            return Json(emailListDTO, JsonRequestBehavior.AllowGet);
+        }
+
         #region Additional methods
         private void AddErrors(IdentityResult result)
         {

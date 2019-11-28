@@ -8,6 +8,8 @@ using MakeIt.Repository.UnitOfWork;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MakeIt.BLL.Service.Authorithation
@@ -28,6 +30,8 @@ namespace MakeIt.BLL.Service.Authorithation
         Task<bool> IsEmailConfirmedAsync(int userId);
         Task<IdentityResult> ResetPasswordAsync(int userId, string token, string newPassword);
         void SignOut();
+
+        IEnumerable<string> GetEmailListContainsString(string pattern);
     }
 
     public class AuthorizationService : EntityService<User>, IAuthorizationService
@@ -144,6 +148,11 @@ namespace MakeIt.BLL.Service.Authorithation
         public void SignOut()
         {
             _authenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+        }
+
+        public IEnumerable<string> GetEmailListContainsString(string pattern)
+        {
+            return _unitOfWork.Users.Find(u => u.Email.Contains(pattern)).ToList().Select(u => u.Email);
         }
     }
 }

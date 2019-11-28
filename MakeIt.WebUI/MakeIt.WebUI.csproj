@@ -259,7 +259,6 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\plugins\dataTables\dataTables.bootstrap.js" />
-    <Content Include="Scripts\plugins\dataTables\projectMemberList.js" />
     <Content Include="Scripts\plugins\dataTables\projectList.js" />
     <Content Include="Scripts\plugins\dataTables\jquery.dataTables.js" />
     <Content Include="Scripts\plugins\flot\excanvas.min.js" />
@@ -274,6 +273,7 @@
     <Content Include="Scripts\plugins\morris\morris.js" />
     <Content Include="Scripts\plugins\morris\morris.min.js" />
     <Content Include="Scripts\plugins\morris\raphael.min.js" />
+    <Content Include="Scripts\fillEmailInput.js" />
     <Content Include="Scripts\sb-admin-2.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
