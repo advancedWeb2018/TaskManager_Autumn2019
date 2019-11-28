@@ -15,7 +15,7 @@ namespace MakeIt.WebUI.Controllers
     [Authorize]
     public class CabinetController : BaseController
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ITaskService _tasktService;
 
         public CabinetController(IMapper mapper, ITaskService taskService, IUnitOfWork unitOfWork) : base(mapper)
@@ -28,34 +28,31 @@ namespace MakeIt.WebUI.Controllers
         public ActionResult Index()
         {
             int userId = User.Identity.GetUserId<int>();
-            //var taskDTOList = _tasktService.GetUserTasksById(userId);
-            var ttasks = _unitOfWork.Tasks.GetAll().ToList();
-            var tasks = ttasks.Where(t => t.AssignedUser.Id == userId);
-            //var taskViewModelList = _mapper.Map<IEnumerable<TaskShowViewModel>>(tasks);
-            /*var currentUser = User.Identity.Name;
-            var currentUserID = _unitOfWork.Users.GetAll().First(user => user.UserName.ToUpper().Equals(currentUser.ToUpper())).Id;
-            var userCurrentTasks = _unitOfWork.Tasks.GetAll().ToList();//.Where(task => task.AssignedUser.Equals(currentUserID)).ToList();
-            //var userOldTasks = _unitOfWork.Tasks.GetAll();*/
-
-            var taskViewModelList = new List<TaskShowViewModel>();
-            foreach (var test in tasks)
+          
+            var tasks = _unitOfWork.Tasks.GetAll().ToList().Where(t => t.AssignedUser.Id == userId);
+           
+            var tempTasks = new List<TaskShowViewModel>();
+            foreach (var task in tasks)
             {
-                TaskShowViewModel task = new TaskShowViewModel();
-                task.Id = test.Id;
-                task.Title = test.Title;
-                task.Description = test.Description;
-                task.Priority = test.Priority.Name;
-                task.Project = test.Project.Name;
-                task.Status = test.Status.Name;
-                task.DueDate = test.DueDate;
-                task.AssignedUser = test.AssignedUser.UserName;
-
-                taskViewModelList.Add(task);
+                if (task.Status.Name.ToUpper().Equals("closed".ToUpper()))
+                    continue;
+                TaskShowViewModel currentTask = new TaskShowViewModel();
+                currentTask.Id = task.Id;
+                currentTask.Title = task.Title;
+                currentTask.Description = task.Description;
+                currentTask.Priority = task.Priority.Name;
+                currentTask.Project = task.Project.Name;
+                currentTask.Status = task.Status.Name;
+                currentTask.DueDate = task.DueDate;
+                currentTask.AssignedUser = task.AssignedUser.UserName;
+                currentTask.CreatedUser = task.CreatedUser.UserName;
+                tempTasks.Add(currentTask);
             }
-            //ViewBag.CurrentTask = taskViewModelList;
-            //ViewBag.OldTask = userOldTasks;
-            //ViewBag.User = User.Identity.Name;
-            return View(taskViewModelList);
+
+            var sortedUserTasksList = (from task in tempTasks
+                                      orderby task.DueDate descending
+                                      select task).ToList();
+            return View(sortedUserTasksList);
         }
     }
 }

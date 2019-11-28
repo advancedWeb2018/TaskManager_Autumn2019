@@ -69,7 +69,8 @@ namespace MakeIt.WebUI.Controllers
         public ActionResult Save(TaskShowViewModel newTask)
         {
             var userId = User.Identity.GetUserId<int>();
-            unitOfWork = new UnitOfWork();                        
+            var userName = User.Identity.Name;
+            unitOfWork = new UnitOfWork();
             var model = new TaskShowViewModel
             {
                 Title = newTask.Title,
@@ -78,6 +79,7 @@ namespace MakeIt.WebUI.Controllers
                 Status = "Open",
                 Project = newTask.Project,
                 AssignedUser = newTask.AssignedUser,
+                CreatedUser = userName,
                 DueDate = newTask.DueDate
             };
 
@@ -91,6 +93,25 @@ namespace MakeIt.WebUI.Controllers
 
         public ActionResult Show(TaskShowViewModel task)
         {
+            unitOfWork = new UnitOfWork();
+            var comments = unitOfWork.Comments.GetAll().Where(c => c.Task.Id == task.Id);
+            ViewBag.Comments = comments;
+            return View(task);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(TaskShowViewModel task)
+        {
+            unitOfWork = new UnitOfWork();
+
+            SelectList projects = new SelectList(unitOfWork.Projects.GetAll(), "Id", "Name");
+            ViewBag.Project = projects;
+
+            SelectList priority = new SelectList(unitOfWork.Priorities.GetAll(), "Id", "Name");
+            ViewBag.Priority = priority;
+
+            SelectList statuses = new SelectList(unitOfWork.Statuses.GetAll(), "Id", "Name");
+            ViewBag.Status = statuses;
 
             return View(task);
         }

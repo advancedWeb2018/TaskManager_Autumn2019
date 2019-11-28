@@ -14,7 +14,7 @@
             </div>
         </div>
 
-        @if (Model != null)
+        @if (Model != null || Model.Count == 0)
         {
             <div class="row">
                 <div class="col-lg-12">
@@ -40,7 +40,7 @@
                                         <td>@task.Project</td>
                                         <td>@task.Status</td>
                                         <td>
-                                            @Html.ActionLink(@task.Title, "Edit", "Task",
+                                            @Html.ActionLink(@task.Title, "Show", "Task",
                                             new MakeIt.WebUI.ViewModel.TaskShowViewModel
                                             {
                                                 Id = task.Id,
@@ -50,7 +50,8 @@
                                                 Priority = task.Priority,
                                                 Status = task.Status,
                                                 Project = task.Project,
-                                                AssignedUser = task.AssignedUser                                                
+                                                AssignedUser = task.AssignedUser,  
+                                                CreatedUser = task.CreatedUser
                                             },
                                             htmlAttributes: new { @class = "text-light bg-dark" })
                                         </td>                                                                              

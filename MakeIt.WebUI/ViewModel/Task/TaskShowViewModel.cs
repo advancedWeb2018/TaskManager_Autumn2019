@@ -11,7 +11,7 @@ namespace MakeIt.WebUI.ViewModel
     {
         public int? Id { get; set; }
         [Required(ErrorMessage = "Title is required")]
-        [StringLength(20, ErrorMessage = "Maximum length is 20 characters")]
+        [StringLength(50, ErrorMessage = "Maximum length is 50 characters")]
         [Display(Name = "Title")]
         public string Title { get; set; }
 
@@ -26,6 +26,8 @@ namespace MakeIt.WebUI.ViewModel
         public string Status { get; set; }
 
         public string Project { get; set; }
+
+        public string CreatedUser { get; set; }
 
         public string AssignedUser { get; set; }
     }

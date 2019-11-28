@@ -23,6 +23,8 @@ namespace MakeIt.BLL.DTO
 
         public string Project { get; set; }
 
+        public string CreatedUser { get; set; }
+
         public string AssignedUser { get; set; }
     }
 }

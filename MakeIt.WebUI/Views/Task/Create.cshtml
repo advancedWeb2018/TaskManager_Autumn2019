@@ -2,11 +2,7 @@
 <link rel="stylesheet" href="/resources/demos/style.css">
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $(function () {
-        $("#datepicker").datepicker();
-    });
-</script>
+
 
 @using MakeIt.WebUI.ViewModel
 
@@ -49,7 +45,16 @@
             </p>
             <p>
                 DueDate
-                <input type="text" id="datepicker" name="DueDate">
+                <input id="datepicker" name="DueDate">
+                (format: mm/dd/yyyy)
+                <script>
+                    $(function () {
+                        $("#datepicker").datepicker({
+                            minDate: 0,
+                            showOn: "focus"
+                        });
+                    });
+                </script>
             </p>
 
 
