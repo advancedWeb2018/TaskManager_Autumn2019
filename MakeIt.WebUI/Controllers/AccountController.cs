@@ -24,6 +24,10 @@ namespace MakeIt.WebUI.Controllers
         #region Login
         public ActionResult Login()
         {
+            if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Project");
+            }
             return View();
         }
 
@@ -77,10 +81,6 @@ namespace MakeIt.WebUI.Controllers
         #region Register
         public ActionResult Register(string returnUrl)
         {
-            //if (System.Web.HttpContext.Current.User.Identity.IsAuthenticated)
-            //{
-            //    return RedirectToAction("Index", "Cabinet");
-            //}
             return View(new RegisterViewModel(ConfigurationManager.AppSettings["RecaptchaPublicKey"]));
         }
 
@@ -248,6 +248,26 @@ namespace MakeIt.WebUI.Controllers
         {
             var emailListDTO = _authorizationService.GetEmailListContainsString(q);
             return Json(emailListDTO, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SendInviteEmail(string email, int projectId)
+        {
+            var userDTO = await _authorizationService.FindByEmailAsync(email);
+            var isUserMemberOfProject = _authorizationService.IsProjectMember(userDTO.Id, projectId);
+            if (isUserMemberOfProject)
+            {
+                TempData["Message"] = "User is already a project member";
+                return RedirectToAction("Edit", "Project", new { projectId });
+            }
+            var code = await _authorizationService.GenerateUserInviteToken(userDTO.Id);
+            var callbackUrl = Url.Action("ConfirmInvite", "Project",
+                                        new { userId = userDTO.Id,  projectId = projectId, code = code }, protocol: Request.Url.Scheme);
+            await _authorizationService.SendEmailAsync(userDTO.Id, "MakeIt / Join to project",
+                       "If you want to join to project, please follow the link:\n" + callbackUrl);
+            TempData["Message"] = "Email was sent";
+            return RedirectToAction("Edit", "Project", new { projectId });
         }
 
         #region Additional methods

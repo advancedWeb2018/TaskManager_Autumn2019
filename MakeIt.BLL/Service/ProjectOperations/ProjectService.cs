@@ -15,6 +15,7 @@ namespace MakeIt.BLL.Service.ProjectOperations
         ProjectDTO GetProjectById(int projectId);
         ProjectDTO CreateProject(ProjectDTO project, int ownerId);
         ProjectDTO EditProject(ProjectDTO project);
+        ProjectDTO AddProjectMember(int userId, int projectId);
     }
 
     public class ProjectService : EntityService<Project>, IProjectService
@@ -25,6 +26,15 @@ namespace MakeIt.BLL.Service.ProjectOperations
             : base(mapper, uow)
         {
             _unitOfWork = uow;
+        }
+
+        public ProjectDTO AddProjectMember(int userId, int projectId)
+        {
+            var project = _unitOfWork.Projects.Get(projectId);
+            var user = _unitOfWork.Users.Get(userId);
+            project.Members.Add(user);
+            _unitOfWork.SaveChanges();
+            return _mapper.Map<ProjectDTO>(project);
         }
 
         public ProjectDTO CreateProject(ProjectDTO project, int ownerId)

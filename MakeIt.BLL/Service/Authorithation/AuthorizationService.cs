@@ -23,12 +23,14 @@ namespace MakeIt.BLL.Service.Authorithation
         Task<AsyncOutResult<IdentityResult, int>> GetIdentityResult(UserAuthDTO userDto);
         Task<string> GenerateEmailConfirmationToken(int userId);
         Task<string> GeneratePasswordResetToken(int userId);
+        Task<string> GenerateUserInviteToken(int userId);
         System.Threading.Tasks.Task SendEmailConfirmationToken(int userId, string callbackUrl);
         System.Threading.Tasks.Task SendEmailAsync(int userId, string subject, string body);
         bool IsTokenExpired(UserAuthDTO userDto, string code);
         Task<IdentityResult> ConfirmEmailAsync(UserAuthDTO userDto, string code);
         Task<bool> IsEmailConfirmedAsync(int userId);
         Task<IdentityResult> ResetPasswordAsync(int userId, string token, string newPassword);
+        bool IsProjectMember(int userId, int projectId);
         void SignOut();
 
         IEnumerable<string> GetEmailListContainsString(string pattern);
@@ -116,7 +118,6 @@ namespace MakeIt.BLL.Service.Authorithation
 
         public bool IsTokenExpired(UserAuthDTO userDto, string code)
         {
-            //var user = await _userManager.FindByEmailAsync(userDto.Email);
             return _userManager.IsTokenExpired(_mapper.Map<User>(userDto), code);
         }
 
@@ -153,6 +154,20 @@ namespace MakeIt.BLL.Service.Authorithation
         public IEnumerable<string> GetEmailListContainsString(string pattern)
         {
             return _unitOfWork.Users.Find(u => u.Email.Contains(pattern)).ToList().Select(u => u.Email);
+        }
+
+        public async Task<string> GenerateUserInviteToken(int userId)
+        {
+            string code = string.Empty;
+            code = await  _userManager.GenerateUserTokenAsync("Invite", userId);
+            return code;
+        }
+
+        public bool IsProjectMember(int userId, int projectId)
+        {
+            var ownerId = _unitOfWork.Projects.Get(projectId).Owner.Id;
+            var memberIds = _unitOfWork.Projects.Get(projectId).Members.Select(m=>m.Id);
+            return (ownerId == userId || memberIds.Contains(userId)) ? true : false;
         }
     }
 }
