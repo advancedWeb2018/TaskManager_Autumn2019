@@ -111,6 +111,10 @@
     <Compile Include="Migrations\201911271339346_MakeItDB-v1.designer.cs">
       <DependentUpon>201911271339346_MakeItDB-v1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201911271901111_MakeItDB-v2.cs" />
+    <Compile Include="Migrations\201911271901111_MakeItDB-v2.designer.cs">
+      <DependentUpon>201911271901111_MakeItDB-v2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfiguration\EFConfiguration.cs" />
     <Compile Include="ModelInitializer\ContextInitializer.cs" />
@@ -126,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911271339346_MakeItDB-v1.resx">
       <DependentUpon>201911271339346_MakeItDB-v1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911271901111_MakeItDB-v2.resx">
+      <DependentUpon>201911271901111_MakeItDB-v2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

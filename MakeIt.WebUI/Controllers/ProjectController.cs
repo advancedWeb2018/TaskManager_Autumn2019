@@ -27,8 +27,9 @@ namespace MakeIt.WebUI.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(ProjectViewModel model)
+        public ActionResult Edit(ProjectViewModel model, bool isNewProject)
         {
+            ViewBag.ActionDetermination = isNewProject ? "Create new" : "Edit";
             return View(model);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MakeIt.BLL.Enum;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace MakeIt.WebUI.ViewModel
@@ -19,8 +20,9 @@ namespace MakeIt.WebUI.ViewModel
         [Display(Name = "Last Update Date")]
         public DateTime? LastUpdateDate { get; set; }
 
-        public bool IsPrivate { get; set; }
-
         public bool IsClosed { get; set; }
+
+        public RoleInProjectEnum RoleInProject { get; set; }
     }
+
 }

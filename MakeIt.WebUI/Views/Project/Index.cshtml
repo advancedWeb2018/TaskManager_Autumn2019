@@ -1,4 +1,6 @@
 ﻿@using MakeIt.WebUI.ViewModel;
+@using MakeIt.BLL.Enum;
+
 @model List<ProjectViewModel>
 
 @{
@@ -13,7 +15,7 @@
             <h1 class="page-header">Projects</h1>
         </div>
         <div class="col-lg-2">
-            <button type="button" onclick="location.href='@Url.Action("Edit", "Project", routeValues: null)'" class="page-header btn btn-success">New project</button>
+            <button type="button" onclick="location.href='@Url.Action("Edit", "Project", routeValues: new { isNewProject = true})'" class="page-header btn btn-success">New project</button>
         </div>
     </div>
     <!-- /.row -->
@@ -24,7 +26,7 @@
             <div class="col-lg-12">
                 <div class="panel-body">
                     <div class="table-responsive">
-                        <table id="projectTable" class="display" style="width:100%">
+                        <table id="projectTable" class="display table-bordered" cellspacing="0" cellpadding="3" width="100%" style="width: 0px;">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -38,21 +40,30 @@
                                     <tr>
                                         @Html.Hidden(@project.Id.ToString())
                                         <td>
-                                            <div>
-                                                <h4>
-                                                    @Html.ActionLink(@project.Name, "Edit", "Project",
-                                                    new MakeIt.WebUI.ViewModel.ProjectViewModel
-                                                    {
-                                                        Id = project.Id,
-                                                        Name = project.Name,
-                                                        Description = project.Description
-                                                    },
-                                                    htmlAttributes: new { @class = "text-light bg-dark" })
-                                                    <span class="label label-primary">Private</span>
-                                                </h4>
-                                                </div>
+                                            <span>
+                                                @Html.ActionLink(@project.Name, "Edit", "Project",
+                                                new
+                                                {
+                                                    @project,
+                                                    isNewProject = false
+                                                },
+                                                htmlAttributes: new { @class = "text-dark" })
+                                            </span>&nbsp;
+                                            @if (project.RoleInProject == RoleInProjectEnum.Owner)
+                                            {
+                                                <span>&nbsp;</span><span class="label label-info">@project.RoleInProject</span>
+                                            }
+                                            @if (project.RoleInProject == RoleInProjectEnum.Member)
+                                            {
+                                                <span>&nbsp;</span><span class="label label-default">@project.RoleInProject</span>
+                                            }
+                                            @if (project.IsClosed)
+                                            {
+                                                <span>&nbsp;</span><span class="label label-danger">@ProjectStateEnum.Closed</span>
+                                            }
                                         </td>
                                         <td>@project.Description</td>
+
                                         <td>@project.LastUpdateDate</td>
                                     </tr>
                                 }

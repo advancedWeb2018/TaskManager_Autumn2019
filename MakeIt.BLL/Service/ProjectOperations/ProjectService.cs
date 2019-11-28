@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MakeIt.BLL.Common;
 using MakeIt.BLL.DTO;
+using MakeIt.BLL.Enum;
 using MakeIt.DAL.EF;
 using MakeIt.Repository.UnitOfWork;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MakeIt.BLL.Service.ProjectOperations
 {
@@ -32,11 +34,8 @@ namespace MakeIt.BLL.Service.ProjectOperations
                 Description = project.Description,
                 Owner = _unitOfWork.GetRepository<User>().Get(ownerId)
             };
-            using (_unitOfWork)
-            {
-                _unitOfWork.GetRepository<Project>().Add(projectAdded);
-                _unitOfWork.SaveChanges();
-            };
+            _unitOfWork.GetRepository<Project>().Add(projectAdded);
+            _unitOfWork.SaveChanges();
         }
 
         public void EditProject(ProjectDTO project)
@@ -44,17 +43,25 @@ namespace MakeIt.BLL.Service.ProjectOperations
             var projectEdited = _unitOfWork.GetRepository<Project>().Get(project.Id);
             projectEdited.Name = project.Name;
             projectEdited.Description = project.Description;
-            using (_unitOfWork)
-            {
-                _unitOfWork.GetRepository<Project>().Edit(projectEdited);
-                _unitOfWork.SaveChanges();
-            };
+            _unitOfWork.GetRepository<Project>().Edit(projectEdited);
+            _unitOfWork.SaveChanges();
         }
 
         public IEnumerable<ProjectDTO> GetUserProjectsById(int userId)
         {
-            var projectList = _unitOfWork.GetRepository<Project>().Find(p => p.Owner.Id == userId);
-            return _mapper.Map<IEnumerable<ProjectDTO>>(projectList);
+            // Owner projects
+            var projectOwnerList = _unitOfWork.GetRepository<Project>()
+                .Find(p => p.Owner.Id == userId);
+            var projectOwnerDTOList = _mapper.Map<IEnumerable<ProjectDTO>>(projectOwnerList);
+            projectOwnerDTOList.ToList().ForEach(p => p.RoleInProject = RoleInProjectEnum.Owner);
+
+            // Member projects
+            var projectMemberList = _unitOfWork.GetRepository<Project>()
+                .Find(p=>p.Members.Where(m => m.Id == userId).Any());
+            var projectMemberDTOList = _mapper.Map<IEnumerable<ProjectDTO>>(projectMemberList);
+            projectMemberDTOList.ToList().ForEach(p => p.RoleInProject = RoleInProjectEnum.Member);
+
+            return projectOwnerDTOList.Union(projectMemberDTOList);
         }
     }
 }

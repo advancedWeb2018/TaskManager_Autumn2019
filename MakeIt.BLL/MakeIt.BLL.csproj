@@ -97,6 +97,8 @@
     <Compile Include="DTO\ProjectDTO.cs" />
     <Compile Include="DTO\TaskDTO.cs" />
     <Compile Include="DTO\UserAuthDTO.cs" />
+    <Compile Include="Enum\ProjectStateEnum.cs" />
+    <Compile Include="Enum\RoleInProjectEnum.cs" />
     <Compile Include="Helper\AsyncOutResult.cs" />
     <Compile Include="IdentityConfig\EmailService.cs" />
     <Compile Include="IdentityConfig\ApplicationUserManager.cs" />
