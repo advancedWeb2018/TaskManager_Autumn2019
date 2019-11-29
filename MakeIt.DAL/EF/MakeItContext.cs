@@ -50,6 +50,8 @@ namespace MakeIt.DAL.EF
         public virtual DbSet<Priority> Priorities { get; set; }
         public virtual DbSet<Status> Statuses { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
+        public virtual DbSet<ExceptionDetail> ExceptionDetails { get; set; }
+        public virtual DbSet<Visitor> Visitors { get; set; }
 
         // Override the OnModelCreating method to add
         // configuration settings

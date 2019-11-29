@@ -9,10 +9,11 @@ using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.TaskOperations;
 using Microsoft.AspNet.Identity;
 using AutoMapper;
+using MakeIt.WebUI.Filters;
 
 namespace MakeIt.WebUI.Controllers
 {
-    [Authorize]
+    [AuthenticationFilter]
     public class TaskController : BaseController
     {
         private readonly ITaskService _taskService;

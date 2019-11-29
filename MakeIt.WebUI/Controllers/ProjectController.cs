@@ -2,6 +2,7 @@
 using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.Authorithation;
 using MakeIt.BLL.Service.ProjectOperations;
+using MakeIt.WebUI.Filters;
 using MakeIt.WebUI.ViewModel;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 
 namespace MakeIt.WebUI.Controllers
 {
-    [Authorize]
+    [AuthenticationFilter]
     public class ProjectController : BaseController
     {
         private readonly IProjectService _projectService;

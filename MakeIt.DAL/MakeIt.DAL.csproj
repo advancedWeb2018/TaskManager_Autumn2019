@@ -89,6 +89,7 @@
     <Compile Include="Common\Entity.cs" />
     <Compile Include="Common\IAuditableEntity.cs" />
     <Compile Include="Common\IEntity.cs" />
+    <Compile Include="EF\ExceptionDetail.cs" />
     <Compile Include="EF\Color.cs" />
     <Compile Include="EF\Comment.cs" />
     <Compile Include="EF\Label.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="EF\UserClaim.cs" />
     <Compile Include="EF\UserLogin.cs" />
     <Compile Include="EF\UserRole.cs" />
+    <Compile Include="EF\Visitor.cs" />
     <Compile Include="Migrations\201911261519487_InitialCreate.cs" />
     <Compile Include="Migrations\201911261519487_InitialCreate.designer.cs">
       <DependentUpon>201911261519487_InitialCreate.cs</DependentUpon>
@@ -114,6 +116,14 @@
     <Compile Include="Migrations\201911271901111_MakeItDB-v2.cs" />
     <Compile Include="Migrations\201911271901111_MakeItDB-v2.designer.cs">
       <DependentUpon>201911271901111_MakeItDB-v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911282347465_MakeItDB-v3-ExceptionDetail.cs" />
+    <Compile Include="Migrations\201911282347465_MakeItDB-v3-ExceptionDetail.designer.cs">
+      <DependentUpon>201911282347465_MakeItDB-v3-ExceptionDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201911290032216_MakeItDB-v4.cs" />
+    <Compile Include="Migrations\201911290032216_MakeItDB-v4.designer.cs">
+      <DependentUpon>201911290032216_MakeItDB-v4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfiguration\EFConfiguration.cs" />
@@ -133,6 +143,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201911271901111_MakeItDB-v2.resx">
       <DependentUpon>201911271901111_MakeItDB-v2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911282347465_MakeItDB-v3-ExceptionDetail.resx">
+      <DependentUpon>201911282347465_MakeItDB-v3-ExceptionDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201911290032216_MakeItDB-v4.resx">
+      <DependentUpon>201911290032216_MakeItDB-v4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

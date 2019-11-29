@@ -8,11 +8,11 @@ using MakeIt.WebUI.ViewModel;
 using Microsoft.AspNet.Identity;
 using MakeIt.DAL.EF;
 using MakeIt.Repository.UnitOfWork;
-
+using MakeIt.WebUI.Filters;
 
 namespace MakeIt.WebUI.Controllers
 {
-    [Authorize]
+    [AuthenticationFilter]
     public class CabinetController : BaseController
     {
         private readonly IUnitOfWork _unitOfWork;
