@@ -57,7 +57,7 @@ namespace MakeIt.WebUI.Controllers
             var tu = unitOfWork.Users.GetAll().ToList();
 
 
-            var users = unitOfWork.Users.GetAll();//.ToList();
+            var users = unitOfWork.Users.GetAll();
             var userNames = from u in users select u.UserName;
             SelectList usersNames= new SelectList(userNames, "AssignedUser");
             ViewBag.Users = usersNames;
@@ -71,50 +71,103 @@ namespace MakeIt.WebUI.Controllers
         {
             var userId = User.Identity.GetUserId<int>();
             var userName = User.Identity.Name;
-            unitOfWork = new UnitOfWork();
-            var model = new TaskShowViewModel
-            {
-                Title = newTask.Title,
-                Description = newTask.Description,
-                Priority = newTask.Priority,
-                Status = "Open",
-                Project = newTask.Project,
-                AssignedUser = newTask.AssignedUser,
-                CreatedUser = userName,
-                DueDate = newTask.DueDate
-            };
+            int taskId = newTask.Id ?? default(int);
 
+            unitOfWork = new UnitOfWork();
+            var oldTask = unitOfWork.Tasks.Get(taskId);
+
+            var model = new TaskShowViewModel();
+            if (newTask.Id == null)
+            {
+                model = new TaskShowViewModel
+                {
+                    Title = newTask.Title,
+                    Description = newTask.Description,
+                    Priority = newTask.Priority,
+                    Status = "Open",
+                    Project = newTask.Project,
+                    AssignedUser = newTask.AssignedUser,
+                    CreatedUser = userName,
+                    DueDate = newTask.DueDate
+                };
+            }
+            else
+            {
+                model.Id = newTask.Id;
+                model.Title = newTask.Title.Equals(oldTask.Title) ? oldTask.Title : newTask.Title;
+                model.Description = newTask.Description.Equals(oldTask.Description) ? oldTask.Description : newTask.Description;
+                model.Status = newTask.Status != null && !newTask.Status.Equals(oldTask.Status.Name) ?
+                    newTask.Status : oldTask.Status.Name;
+                model.Priority = newTask.Priority != null && !newTask.Priority.Equals(oldTask.Priority.Name)  ?
+                    newTask.Priority: oldTask.Priority.Name;
+                model.Project = newTask.Project != null && !newTask.Project.Equals(oldTask.Project.Name) ?
+                    newTask.Project : oldTask.Project.Name;
+                model.AssignedUser = newTask.AssignedUser != null && newTask.AssignedUser.Equals(oldTask.AssignedUser.UserName) ?
+                    newTask.AssignedUser : oldTask.AssignedUser.UserName;
+                model.CreatedUser = oldTask.CreatedUser.UserName;
+                model.DueDate = newTask.DueDate != null && newTask.DueDate > DateTime.MinValue && newTask.DueDate.ToString("mm/dd/yyyy").Equals(oldTask.DueDate.ToString("mm/dd/yyyy")) ?
+                    newTask.DueDate : oldTask.DueDate;
+                
+            }
             var taskDTO = _mapper.Map<TaskDTO>(model);
             if (model.Id == null)
-                _taskService.CreateTask(taskDTO, userId);
-            else _taskService.EditTask(taskDTO);
-            
+                taskDTO =_taskService.CreateTask(taskDTO, userId);
+            else taskDTO =_taskService.EditTask(taskDTO);                                 
+
             return RedirectToAction("Index", "Cabinet");
         }
 
-        public ActionResult Show(TaskShowViewModel task)
+        [HttpGet]
+        public ActionResult Show(int taskId)
         {
             unitOfWork = new UnitOfWork();
-            var comments = unitOfWork.Comments.GetAll().Where(c => c.Task.Id == task.Id);
-            ViewBag.Comments = comments;
-            return View(task);
+            var task = unitOfWork.Tasks.Get(taskId);
+            TaskShowViewModel currentTask = new TaskShowViewModel();
+
+            currentTask.Id = task.Id;
+            currentTask.Title = task.Title;
+            currentTask.Description = task.Description;
+            currentTask.Priority = task.Priority.Name;
+            currentTask.Status = task.Status.Name;
+            currentTask.Project = task.Project.Name;
+            currentTask.AssignedUser = task.AssignedUser.UserName;
+            currentTask.CreatedUser = task.CreatedUser.UserName;
+            currentTask.DueDate = task.DueDate;
+            
+            return View(currentTask);
         }
 
-        [HttpPost]
-        public ActionResult Edit(TaskShowViewModel task)
+        [HttpGet]
+        public ActionResult Edit(int taskId)
         {
             unitOfWork = new UnitOfWork();
+            var task = unitOfWork.Tasks.Get(taskId);
 
-            SelectList projects = new SelectList(unitOfWork.Projects.GetAll(), "Id", "Name");
+            TaskShowViewModel currentTask = new TaskShowViewModel();
+            currentTask.Id = task.Id;
+            currentTask.Title = task.Title;
+            currentTask.Description = task.Description;
+            currentTask.Priority = task.Priority.Name;
+            currentTask.Project = task.Project.Name;
+            currentTask.Status = task.Status.Name;
+            currentTask.DueDate = task.DueDate;
+            currentTask.AssignedUser = task.AssignedUser.UserName;
+            currentTask.CreatedUser = task.CreatedUser.UserName;
+
+            var projects = new SelectList(unitOfWork.Projects.GetAll(), "Name", "Name");
+
             ViewBag.Project = projects;
 
-            SelectList priority = new SelectList(unitOfWork.Priorities.GetAll(), "Id", "Name");
+            var priority = new SelectList(unitOfWork.Priorities.GetAll(), "Name", "Name");           
             ViewBag.Priority = priority;
 
-            SelectList statuses = new SelectList(unitOfWork.Statuses.GetAll(), "Id", "Name");
+            var statuses = new SelectList(unitOfWork.Statuses.GetAll(), "Name", "Name");
             ViewBag.Status = statuses;
 
-            return View(task);
+            var usersForAssignee = new SelectList(unitOfWork.Users.GetAll(), "UserName", "UserName");
+            ViewBag.UsersForAssignee = usersForAssignee;
+            
+            return View(currentTask);
         }
     }
 }
