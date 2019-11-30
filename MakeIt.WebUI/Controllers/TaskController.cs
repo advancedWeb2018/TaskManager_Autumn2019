@@ -36,8 +36,10 @@ namespace MakeIt.WebUI.Controllers
                 return RedirectToAction("LogOff", "Account");
             }
             unitOfWork = new UnitOfWork();
-            
-            var projects = unitOfWork.Projects.GetAll();
+            var currentUserobj = unitOfWork.Users.GetAll()
+                .First(us => us.UserName.ToUpper().Equals(currentUser.ToUpper()));
+
+            var projects = unitOfWork.Projects.GetAll().ToList().Where(pr=>pr.Owner == currentUserobj || pr.Members.Contains(currentUserobj));
             var projNames = from proj in projects select proj.Name;
             SelectList project = new SelectList(projNames, "Project");
 
@@ -154,10 +156,15 @@ namespace MakeIt.WebUI.Controllers
             currentTask.AssignedUser = task.AssignedUser.UserName;
             currentTask.CreatedUser = task.CreatedUser.UserName;
 
-            var projects = new SelectList(unitOfWork.Projects.GetAll(), "Name", "Name");
+            string currentUser = User.Identity.Name;
+            var currentUserobj = unitOfWork.Users.GetAll()
+                .First(us => us.UserName.ToUpper().Equals(currentUser.ToUpper()));
 
-            ViewBag.Project = projects;
+            var projects = unitOfWork.Projects.GetAll().ToList().Where(pr => pr.Owner == currentUserobj || pr.Members.Contains(currentUserobj));
+            var projNames = from proj in projects select proj.Name;
+            ViewBag.Project = new SelectList(projNames, "Project");
 
+            
             var priority = new SelectList(unitOfWork.Priorities.GetAll(), "Name", "Name");           
             ViewBag.Priority = priority;
 
