@@ -10,8 +10,8 @@ namespace MakeIt.BLL.Service.TaskOperations
     public interface ITaskService : IEntityService<Project>
     {
         IEnumerable<TaskDTO> GetUserTasksById(int userId);
-        void CreateTask(TaskDTO task, int ownerId);
-        void EditTask(TaskDTO task);
+        TaskDTO CreateTask(TaskDTO task, int ownerId);
+        TaskDTO EditTask(TaskDTO task);
     }
 
     public class TaskService : EntityService<Project>, ITaskService
@@ -24,7 +24,7 @@ namespace MakeIt.BLL.Service.TaskOperations
             _unitOfWork = uow;
         }
 
-        public void CreateTask(TaskDTO task, int ownerId)
+        public TaskDTO CreateTask(TaskDTO task, int ownerId)
         {
             var taskAdded = new Task
             {
@@ -42,9 +42,10 @@ namespace MakeIt.BLL.Service.TaskOperations
                 _unitOfWork.GetRepository<Task>().Add(taskAdded);
                 _unitOfWork.SaveChanges();
             };
+            return _mapper.Map<TaskDTO>(taskAdded);
         }
 
-        public void EditTask(TaskDTO task)
+        public TaskDTO EditTask(TaskDTO task)
         {
             var taskEdited = _unitOfWork.GetRepository<Task>().Get(task.Id);
             taskEdited.Title = task.Title;
@@ -60,6 +61,7 @@ namespace MakeIt.BLL.Service.TaskOperations
                 _unitOfWork.GetRepository<Task>().Edit(taskEdited);
                 _unitOfWork.SaveChanges();
             };
+            return _mapper.Map<TaskDTO>(taskEdited);
         }
 
         public IEnumerable<TaskDTO> GetUserTasksById(int userId)

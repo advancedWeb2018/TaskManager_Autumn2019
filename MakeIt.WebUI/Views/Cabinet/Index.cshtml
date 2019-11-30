@@ -41,20 +41,12 @@
                                         <td>@task.Status</td>
                                         <td>
                                             @Html.ActionLink(@task.Title, "Show", "Task",
-                                            new MakeIt.WebUI.ViewModel.TaskShowViewModel
+                                            new 
                                             {
-                                                Id = task.Id,
-                                                Title = task.Title,
-                                                Description = task.Description,
-                                                DueDate = task.DueDate,                                                
-                                                Priority = task.Priority,
-                                                Status = task.Status,
-                                                Project = task.Project,
-                                                AssignedUser = task.AssignedUser,  
-                                                CreatedUser = task.CreatedUser
+                                                taskId = task.Id                                                
                                             },
                                             htmlAttributes: new { @class = "text-light bg-dark" })
-                                        </td>                                                                              
+                                        </td>
                                     </tr>
                                     }
                                 </tbody>
