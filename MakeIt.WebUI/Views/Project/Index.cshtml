@@ -64,7 +64,7 @@
                                         </td>
                                         <td>@project.Description</td>
 
-                                        <td>@project.LastUpdateDate</td>
+                                        <td>@project.LastUpdateDate.Value.ToLocalTime()</td>
                                     </tr>
                                 }
                             </tbody>

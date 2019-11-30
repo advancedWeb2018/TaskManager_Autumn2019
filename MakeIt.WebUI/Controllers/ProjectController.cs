@@ -3,6 +3,7 @@ using MakeIt.BLL.DTO;
 using MakeIt.BLL.Service.Authorithation;
 using MakeIt.BLL.Service.ProjectOperations;
 using MakeIt.WebUI.Filters;
+using MakeIt.WebUI.SignalR.Hubs;
 using MakeIt.WebUI.ViewModel;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
@@ -87,6 +88,8 @@ namespace MakeIt.WebUI.Controllers
                 return View("CrashedLink");
             }
             var projectViewModel = _mapper.Map<ProjectViewModel>(_projectService.GetProjectById(projectId));
+            projectViewModel.RoleInProject = BLL.Enum.RoleInProjectEnum.Member;
+
             ViewBag.ActionDetermination = "Edit";
             if (_authorizationService.IsProjectMember(userId, projectId))
             {
@@ -94,6 +97,15 @@ namespace MakeIt.WebUI.Controllers
                 return View("Edit", projectViewModel);
             }
             var projectAddedViewModel = _mapper.Map<ProjectViewModel>(_projectService.AddProjectMember(userId, projectId));
+            projectAddedViewModel.RoleInProject = BLL.Enum.RoleInProjectEnum.Member;
+
+            // Получаем контекст хаба
+            var context =
+                Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<InviteNotificationHub>();
+
+            // отправляем сообщение
+            context.Clients.All.displayMessage("Новый участник проекта");
+
             ViewBag.ActionResult = "You have joined to project just now";
             return View("Edit", projectAddedViewModel);
         }

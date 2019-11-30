@@ -10,6 +10,7 @@ namespace MakeIt.WebUI
         internal static IDataProtectionProvider DataProtectionProvider { get; private set; }
         public void Configuration(IAppBuilder app)
         {
+            app.MapSignalR();
             DataProtectionProvider = app.GetDataProtectionProvider();
             ConfigureApp(app);
         }
