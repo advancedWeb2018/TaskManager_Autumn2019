@@ -8,10 +8,10 @@ namespace MakeIt.WebUI
         // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.UseCdn = true;
             bundles.Add(new StyleBundle("~/Content/commonStyles").Include(
                     "~/Content/css/bootstrap.min.css",
                     "~/Content/css/sb-admin-2.css",
-                    "~/Content/css/footer.css",
                     "~/Content/css/plugins/metisMenu/metisMenu.min.css"));
 
             //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(

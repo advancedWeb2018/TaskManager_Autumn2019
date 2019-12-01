@@ -16,6 +16,7 @@ namespace MakeIt.BLL.Service.ProjectOperations
         ProjectDTO CreateProject(ProjectDTO project, int ownerId);
         ProjectDTO EditProject(ProjectDTO project);
         ProjectDTO AddProjectMember(int userId, int projectId);
+        IEnumerable<string> GetNamesProjectMembers(int projectId);
     }
 
     public class ProjectService : EntityService<Project>, IProjectService
@@ -58,6 +59,15 @@ namespace MakeIt.BLL.Service.ProjectOperations
             _unitOfWork.GetRepository<Project>().Edit(projectEdited);
             _unitOfWork.SaveChanges();
             return _mapper.Map<ProjectDTO>(projectEdited);
+        }
+
+        public IEnumerable<string> GetNamesProjectMembers(int projectId)
+        {
+            var project = _unitOfWork.GetRepository<Project>().Get(projectId);
+            var nameOwnerList = project.Owner.UserName;
+            var namesMemberList = project.Members.Select(m => m.UserName).ToList();
+            namesMemberList.Add(nameOwnerList);
+            return namesMemberList;
         }
 
         public ProjectDTO GetProjectById(int projectId)

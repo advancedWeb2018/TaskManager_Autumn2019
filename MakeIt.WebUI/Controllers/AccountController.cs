@@ -255,6 +255,11 @@ namespace MakeIt.WebUI.Controllers
         public async Task<ActionResult> SendInviteEmail(string email, int projectId)
         {
             var userDTO = await _authorizationService.FindByEmailAsync(email);
+            if (userDTO==null)
+            {
+                TempData["Message"] = "Incorrect email";
+                return RedirectToAction("Edit", "Project", new { projectId });
+            }
             var isUserMemberOfProject = _authorizationService.IsProjectMember(userDTO.Id, projectId);
             if (isUserMemberOfProject)
             {

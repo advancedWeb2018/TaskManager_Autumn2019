@@ -31,33 +31,33 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Project</h1>
+            <h1 class="page-header">Project - #@Model.Id</h1>
         </div>
     </div>
     <!-- /.row -->
 
     @if (Model.RoleInProject == MakeIt.BLL.Enum.RoleInProjectEnum.Owner)
     {
-        using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @role = "form" }))
+        using (Html.BeginForm("EditProject", "Project", FormMethod.Post, new { @id="projectForm", @role = "form" }))
         {
             @Html.AntiForgeryToken()
             <fieldset>
                 <input type="hidden" value="@Model.Id" name="id" />
                 <div class="form-group row">
                     <div class="col-lg-6">
-                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name", @autofocus = "autofocus" })
+                        @Html.TextBoxFor(m => m.Name, new { @id = "name", @class = "form-control", placeholder = "Name", @autofocus = "autofocus" })
                         @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-lg-6">
-                        @Html.TextAreaFor(m => m.Description, 5, 9, new { @class = "form-control", placeholder = "Description" })
+                        @Html.TextAreaFor(m => m.Description, 5, 9, new { @id = "description", @class = "form-control", placeholder = "Description" })
                         @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-lg-1">
-                        <button type="submit" class="page-header btn btn-success">@ViewBag.ActionDetermination</button>
+                        <button id="editButton" type="submit" class="page-header btn btn-success" disabled>@ViewBag.ActionDetermination</button>
                     </div>
                     <div class="col-lg-1">
                         <input type="button" value="Cancel" onclick="location.href='@Url.Action("Index","Project")';" class="page-header btn btn-success" />
@@ -119,22 +119,20 @@
 </div>
 <!-- /.page-wrapper -->
 
-<script defer src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.0/dist/latest/bootstrap-autocomplete.min.js"></script>
-<script defer src="~/Scripts/fillEmailInput.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/xcash/bootstrap-autocomplete@v2.3.0/dist/latest/bootstrap-autocomplete.min.js"></script>
+<script src="~/Scripts/fillEmailInput.js"></script>
+<script src="~/Scripts/validateEmailInput.js"></script>
+<script src="~/Scripts/validateProjectInput.js"></script>
 <script type="text/javascript">
     $(function () {
         window.setTimeout(function () {
             $('#actionResult').alert('close');
-        }, 1000);
+        }, 2000);
     });
 
     $(function () {
         window.setTimeout(function () {
             $('#message').alert('close');
-        }, 1000);
-    });
-
-    $('#emailInvite').keyup(function () {
-        $('#sendButton').prop('disabled', $(this).val().length <= 5);
+        }, 2000);
     });
 </script>

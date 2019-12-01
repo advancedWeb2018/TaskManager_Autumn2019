@@ -103,8 +103,9 @@ namespace MakeIt.WebUI.Controllers
             var context =
                 Microsoft.AspNet.SignalR.GlobalHost.ConnectionManager.GetHubContext<InviteNotificationHub>();
 
+            var ss =  context.Clients.All as List<string>;
             // отправляем сообщение
-            context.Clients.All.displayMessage("Новый участник проекта");
+            context.Clients.All.displayMessage(userDTO.UserName +" joined to #" + projectId + " project");
 
             ViewBag.ActionResult = "You have joined to project just now";
             return View("Edit", projectAddedViewModel);

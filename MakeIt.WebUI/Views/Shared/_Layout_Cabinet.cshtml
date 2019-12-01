@@ -111,9 +111,13 @@
 
         @RenderBody()
 
-        <footer>
-            <p>© @DateTime.UtcNow.Year MakeIt</p>
-        </footer>
+        <div class="footer navbar-fixed-bottom row-fluid">
+            <div class="navbar-inner">
+                <div class="container">
+                    <p>© @DateTime.UtcNow.Year MakeIt</p>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -131,7 +135,7 @@
 
             notificationhub.client.displayMessage = function (message) {
 
-               // for success - green box
+                // for success - green box
                 toastr.options.timeOut = 0;
                 toastr.options.extendedTimeOut = 0;
                 toastr.success(message);

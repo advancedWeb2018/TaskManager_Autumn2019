@@ -6,7 +6,6 @@
 @{
     ViewBag.Title = "MakeIt";
 }
-<script defer src="~/Scripts/plugins/dataTables/projectList.js"></script>
 
 <div id="page-wrapper">
 
@@ -41,7 +40,7 @@
                                         @Html.Hidden(@project.Id.ToString())
                                         <td>
                                             <span>
-                                                @Html.ActionLink(@project.Name, "Edit", "Project",
+                                                @Html.ActionLink("#"+@project.Id.ToString()+" - " + @project.Name, "Edit", "Project",
                                                 new 
                                                 {
                                                     projectId = @project.Id,
@@ -97,4 +96,6 @@
     }
 
 </div>
+<script src="~/Scripts/plugins/dataTables/projectList.js"></script>
+
 <!-- /.page-wrapper -->
