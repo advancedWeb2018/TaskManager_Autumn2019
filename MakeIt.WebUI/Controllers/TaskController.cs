@@ -104,7 +104,7 @@ namespace MakeIt.WebUI.Controllers
                 model.AssignedUser = newTask.AssignedUser != null && newTask.AssignedUser.Equals(oldTask.AssignedUser.UserName) ?
                     newTask.AssignedUser : oldTask.AssignedUser.UserName;
                 model.CreatedUser = oldTask.CreatedUser.UserName;
-                model.DueDate = newTask.DueDate != null && newTask.DueDate > DateTime.MinValue && newTask.DueDate.ToString("mm/dd/yyyy").Equals(oldTask.DueDate.ToString("mm/dd/yyyy")) ?
+                model.DueDate = newTask.DueDate != null && newTask.DueDate > DateTime.MinValue && !newTask.DueDate.ToString("mm/dd/yyyy").Equals(oldTask.DueDate.ToString("mm/dd/yyyy")) ?
                     newTask.DueDate : oldTask.DueDate;
                 
             }

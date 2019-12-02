@@ -60,9 +60,9 @@
 
             <div class="form-group row">
                 <div class="col-md-1">Due:</div>
-
-                <input id="datepicker" name="DueDate" value="@Model.DueDate.ToString("MM/dd/yyyy")">
-                (format: mm/dd/yyyy)
+                <div class="col-md-3">
+                    <input id="datepicker" name="DueDate" value="@Model.DueDate.ToString("MM/dd/yyyy")">(format: mm/dd/yyyy)
+                </div>
                 <script>
                     $(function () {
                         $("#datepicker").datepicker({

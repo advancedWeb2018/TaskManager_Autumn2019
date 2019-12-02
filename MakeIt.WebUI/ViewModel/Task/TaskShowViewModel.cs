@@ -18,7 +18,7 @@ namespace MakeIt.WebUI.ViewModel
         [StringLength(500, ErrorMessage = "Maximum Length is 500 characters")]
         [Display(Name = "Description")]
         public string Description { get; set; }
-
+        [DataType(DataType.Date)]
         public DateTime DueDate { get; set; }
         
         public string Priority { get; set; }
